@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Hello building!</title>
+	<script src="/js/xbim/xbim-viewer.debug.bundle.js"></script>
+</head>
+<body>
+	<div id="group0">
+		<canvas id="viewer0" width="600" height="600"></canvas>
+		<script type="text/javascript">
+			var viewer0 = new xViewer('viewer0');
+			viewer0.load('4f.wexBIM');
+			viewer0.start();
+		</script>
+	</div>
+</body>
+</html>
