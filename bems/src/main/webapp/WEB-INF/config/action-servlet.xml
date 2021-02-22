@@ -44,17 +44,16 @@
     	p:viewClass="org.springframework.web.servlet.view.JstlView" 
     	p:prefix="/WEB-INF/jsp/" p:suffix=".jsp">
    	</bean>
-<!-- 1. Cron 대상이 되는 클래스 정의
+<!-- 
 	<bean id="cronQuartz" class="org.springframework.scheduling.quartz.JobDetailBean">
 	    <property name="jobClass" value="com.ean.quartz.CronQuartz"/>
 	</bean>
 	
-	2. Cron 시간 설정
 	<bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	    <property name="jobDetail" ref="cronQuartz"/>
  	    <property name="cronExpression" value="0 0/15 * * * ?"/>  
 	</bean>
-	3. Cron 실행
+	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	    <property name="triggers">
 	        <list>

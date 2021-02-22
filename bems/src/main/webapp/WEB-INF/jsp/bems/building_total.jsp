@@ -12,9 +12,9 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>EAN BEMS</title>
-<link rel="stylesheet" type="text/css" href="/css/layout.css?ver=1">
-<link rel="stylesheet" type="text/css" href="/css/common.css?ver=1">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css?ver=1">
+<link rel="stylesheet" type="text/css" href="/css/layout.css">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -44,7 +44,7 @@
     <div class="both">
       <div class="fl">
         <div class="top_uit">
-          <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
+        <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
         </div>
         <ul class="lnb_h">
           <li class="active"><a href="#">메인화면</a> </li>
@@ -94,12 +94,12 @@
               <ul class="list_legend">
                 <li><div class="gre"></div>전기</li>
                 <li><div class="ye"></div>가스</li>
-                <li><div class="sk"></div>유류</li>
+                <li><div class="sk"></div>수도</li>
               </ul>
             </div>
           </div>
           <div class="box_type01"> 
-          <!-- 1920 일때 height: 195px; / 전기 : #a3fe00 / 가스 : #f15d45 / 수도 : #3ddcf7 <br>
+          <!-- 1920 일때 height: 195px; / 전기 : #a3fe00 / 가스 : #ffc600 / 수도 : #3ddcf7 <br>
             3840 일때 height: 390px;
              -->
 				<div id="container1" style="height: 195px; margin: 0 auto"></div>
@@ -133,7 +133,7 @@
           </div>
           <div class="box_type02">
 			<div id="container2" style="height: 260px; margin: 0 auto"></div>
-           <!-- 1920 일때 height: 195px; / 냉방 : #3bafda / 난방 : #ffaa00 / 급탕 : #3ddcf7  / 환기 : #a3fe00 / 조명 : #f15d45 / 콘센트 : #3ddcf7 <br>
+           <!-- 1920 일때 height: 195px; / 냉방 : #3bafda / 난방 : #ffaa00 / 급탕 : #3ddcf7  / 환기 : #a3fe00 / 조명 : #ffc600 / 콘센트 : #3ddcf7 <br>
             3840 일때 height: 390px;
              --> 
 
@@ -324,14 +324,14 @@
 				$(this).mouseover(function() {
 					$(this).find('a').css({
 						'background' : '#ffffcc',
-						'border' : '1px solid #191c1a'
+						'border' : '1px solid #dddddd'
 					});
 					$(this).find('a').removeClass('ui-state-default');
 					$(this).css('background', '#ffffcc');
 				});
 				
 				$(this).mouseout(function() {
-					$(this).css('background', '#f2f2f2');
+					$(this).css('background', '#ffffff');
 					$(this).find('a').css('background', '');
 					$(this).find('a').addClass('ui-state-default');
 				});
@@ -409,7 +409,7 @@
 			,marginTop: 30
 			,marginRight: 70
 			,marginBottom: 25
-			,backgroundColor :'#f2f2f2'
+			,backgroundColor :'#323b44'
 	    },
 		credits: {
 			enabled: false
@@ -427,7 +427,7 @@
 	        crosshair: true,
             labels: {
                 style: {
-                    color: 'black'
+                    color: 'white'
                 }
             }
 	    }],
@@ -469,7 +469,7 @@
 		}, { // 3th yAxis
 	        gridLineWidth: 0,
 	        title: {
-	            text: '유류'
+	            text: '수도'
 //	            ,
 //	            style: {
 //	                color: Highcharts.getOptions().colors[2]
@@ -496,9 +496,9 @@
 			verticalAlign: 'top',
 			y: 55,
 			floating: false,// true,
-			backgroundColor :'#f2f2f2',
-			itemStyle:{color:'#0b4a45'}
-			//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#124e87'
+			backgroundColor :'#323b44',
+			itemStyle:{color:'#f0f0f0'}
+			//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 		},
 		exporting: {
             enabled: false
@@ -513,7 +513,7 @@
 			,marginTop: 30
 			,marginRight: 70
 			,marginBottom: 25
-			,backgroundColor :'#f2f2f2'
+			,backgroundColor :'#323b44'
 	    },
 		credits: {
 			enabled: false
@@ -532,7 +532,7 @@
             labels: {
             	format: '{value}',
                 style: {
-                    color: 'black'
+                    color: 'white'
                 }
             }
 	    }],
@@ -541,7 +541,7 @@
             labels: {
             	format: '{value} Kwh',
                 style: {
-                    color: 'black'
+                    color: 'white'
                 }
             },
             title: {
@@ -560,9 +560,9 @@
 			verticalAlign: 'top',
 			y: 55,
 			floating: true,// true,
-			backgroundColor :'#f2f2f2',
-			itemStyle:{color:'#0b4a45'}
-			//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#f2f2f2'
+			backgroundColor :'#323b44',
+			itemStyle:{color:'#f0f0f0'}
+			//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 		},
 		exporting: {
             enabled: false
@@ -579,7 +579,7 @@
 			,marginTop: 30
 			,marginRight: 70
 			,marginBottom: 25
-			,backgroundColor :'#f2f2f2'
+			,backgroundColor :'#323b44'
 	    },
 		credits: {
 			enabled: false
@@ -596,7 +596,7 @@
 	        categories: ['냉/난방', '급탕', '환기', '조명', '콘센트'],
             labels: {
                 style: {
-                    color: 'black'
+                    color: 'white'
                 }
             }
 	    }],
@@ -607,7 +607,7 @@
 //                    return 1000; // parseInt((this.value  * this.value ) + 1);
 //                 },
                 style: {
-                    color: 'black'
+                    color: 'white'
                 }
             }
 	    },
@@ -676,7 +676,7 @@
 
 		    success:function(data){
 
-            	var color1 = '#5789ff', color2 = '#0b4a45', color3 = '#d10a0a';
+            	var color1 = '#00b19d', color2 = '#f0f0f0', color3 = '#3baeda';
             	var total;
             	var series = {showInLegend:false,data:[]};
             	
@@ -742,6 +742,18 @@
 	function fn_use(){
 	    var comSubmit = new ComSubmit();
 	    comSubmit.setUrl("<c:url value='/data/energyUse.do' />");
+	    comSubmit.submit();
+	}
+	
+	$("#floor").on("click", function(e){ 
+	    e.preventDefault();
+	    fn_floor();
+	});
+	
+	function fn_floor(floor){
+	    var comSubmit = new ComSubmit();
+	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
+	    comSubmit.addParam("C_FLOOR", floor);
 	    comSubmit.submit();
 	}
 	

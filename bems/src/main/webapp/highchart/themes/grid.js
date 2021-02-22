@@ -118,7 +118,7 @@
             navigation: {
                 buttonOptions: {
                     theme: {
-                        stroke: '#3b453d'
+                        stroke: '#CCCCCC'
                     }
                 }
             }

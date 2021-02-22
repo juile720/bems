@@ -55,14 +55,14 @@
             },
             title: {
                 style: {
-                    color: '#060612',
+                    color: '#E0E0E3',
                     textTransform: 'uppercase',
                     fontSize: '20px'
                 }
             },
             subtitle: {
                 style: {
-                    color: '#060612',
+                    color: '#E0E0E3',
                     textTransform: 'uppercase'
                 }
             },
@@ -70,7 +70,7 @@
                 gridLineColor: '#707073',
                 labels: {
                     style: {
-                        color: '#060612'
+                        color: '#E0E0E3'
                     }
                 },
                 lineColor: '#707073',
@@ -87,7 +87,7 @@
                 gridLineColor: '#707073',
                 labels: {
                     style: {
-                        color: '#060612'
+                        color: '#E0E0E3'
                     }
                 },
                 lineColor: '#707073',
@@ -103,7 +103,7 @@
             tooltip: {
                 backgroundColor: 'rgba(0, 0, 0, 0.85)',
                 style: {
-                    color: '#0b4a45'
+                    color: '#F0F0F0'
                 }
             },
             plotOptions: {
@@ -127,7 +127,7 @@
             },
             legend: {
                 itemStyle: {
-                    color: '#060612'
+                    color: '#E0E0E3'
                 },
                 itemHoverStyle: {
                     color: '#FFF'

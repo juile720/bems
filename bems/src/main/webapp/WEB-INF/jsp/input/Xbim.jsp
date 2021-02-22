@@ -14,9 +14,9 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>EAN BEMS</title>
-<link rel="stylesheet" type="text/css" href="/css/layout.css?ver=1">
-<link rel="stylesheet" type="text/css" href="/css/common.css?ver=1">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css?ver=1">
+<link rel="stylesheet" type="text/css" href="/css/layout.css">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -38,7 +38,7 @@
     <div class="both">
       <div class="fl">
         <div class="top_uit">
-          <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
+          <h1><a href="/" title="메인페이지 바로가기" class="screen_out">EAN BEMS_Logo</a></h1>
         </div>
       </div>
       <div class="fr">

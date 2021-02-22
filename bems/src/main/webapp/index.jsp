@@ -13,8 +13,8 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 
 <title>EAN BEMS</title>
-<link rel="stylesheet" type="text/css" href="/css/main_layout.css?ver=1"> 
-<link rel="stylesheet" type="text/css" href="/css/common.css?ver=1"> 
+<link rel="stylesheet" type="text/css" href="/css/main_layout.css"> 
+<link rel="stylesheet" type="text/css" href="/css/common.css"> 
 <!--  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" /> -->
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -31,7 +31,7 @@
   <div class="both">
     <div class="fl">
       <div class="top_uit">
-        <h1><a href="10.1.1.49:8085" title="메인페이지 바로가기" class="screen_out">EAN BEMS_Logo</a></h1>
+      <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
       </div>
       <ul class="lnb_h">
         <li> <a href="#" id="total">메인화면</a> </li>
@@ -108,6 +108,18 @@
 	    comSubmit.submit();
 	}
 	
+	$("#floor").on("click", function(e){ 
+	    e.preventDefault();
+	    fn_floor();
+	});
+	
+	function fn_floor(floor){
+	    var comSubmit = new ComSubmit();
+	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
+	    comSubmit.addParam("C_FLOOR", "4");
+	    comSubmit.submit();
+	}
+	
 	$("#facilities").on("click", function(e){ 
 	    e.preventDefault();
 	    fn_facilities();
@@ -117,17 +129,6 @@
 	    var comSubmit = new ComSubmit();
 	    //comSubmit.setUrl("<c:url value='/data/energyFacilities.do' />");
 	    comSubmit.setUrl("<c:out value='/data/energyFacilities.do' />");
-	    comSubmit.submit();
-	}
-	$("#floor").on("click", function(e){ 
-	    e.preventDefault();
-	    fn_floor();
-	});
-	
-	function fn_floor(){
-	    var comSubmit = new ComSubmit();
-	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
-	    comSubmit.addParam("C_FLOOR", "4");
 	    comSubmit.submit();
 	}
 	

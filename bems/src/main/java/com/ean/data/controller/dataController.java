@@ -28,7 +28,7 @@ public class dataController {
 	private CommonService commonService;
 
 	/*
-	 * í˜„ì¬ ì˜¨ë„ë¥¼ ì…ë ¥ë°›ëŠ”ë‹¤
+	 * ÇöÀç ¿Âµµ¸¦ ÀÔ·Â¹Ş´Â´Ù
 	 */
 /*    @RequestMapping(value = "/data/inputtemp.do")
     @ResponseBody
@@ -101,7 +101,7 @@ public class dataController {
     	Map<String, Object> resultList = new HashMap<String, Object>();
     	
     	Calendar cal = Calendar.getInstance();
-    	//í˜„ì¬ ë…„ë„, ì›”, ì¼
+    	//ÇöÀç ³âµµ, ¿ù, ÀÏ
     	int year = cal.get ( cal.YEAR );
     	int month = cal.get ( cal.MONTH ) + 1 ;
     	int date = cal.get ( cal.DATE ) ;
@@ -135,7 +135,6 @@ public class dataController {
 			day2 = Integer.toString(year) + Integer.toString(month);
 			yyyymm1 = day1; yyyymm2 = day2;
 		}
-    	
     	if (Integer.toString(date).length() < 2){
     		day1 = day1 + "0" + Integer.toString(date);
     		day2 = day2 + "0" + Integer.toString(date);
@@ -223,7 +222,7 @@ public class dataController {
         	
         	sb.setName("CO2");
         	sb.setType("spline");
-        	sb.setColor("#f5d14e");
+        	sb.setColor("#a3fe00");
         	sb.setData(dat);
         	
         	seb.add(sb);
@@ -235,9 +234,9 @@ public class dataController {
 
         	sb = new SeriesBean(null, null, null, null);
         	
-        	sb.setName("ëƒ‰ë°©");
+        	sb.setName("³Ã¹æ");
         	sb.setType("column");
-        	sb.setColor("#f15d45");
+        	sb.setColor("#ffc600");
         	sb.setData(dat1);
         	
         	seb.add(sb);
@@ -353,7 +352,7 @@ public class dataController {
 		
 		List<Map<String, Object>> resultMap = null;
 		if(gubun != null && cFloor != null && cYear != null) {
-			// í…Œì´ë¸” ì¶”ê°€ì‹œ sTable í•­ëª© ì¶”ê°€
+			// Å×ÀÌºí Ãß°¡½Ã sTable Ç×¸ñ Ãß°¡
 			if(gubun.equals("gas")) {
 				commandMap.put("sTable", "TB_GAS2");
 			} else if(gubun.equals("water")) {
@@ -392,19 +391,19 @@ public class dataController {
 		String cYear = (String)commandMap.get("cYear");
 		String cMonth = (String)commandMap.get("cMonth");
 		
-		// í…Œì´ë¸” ì¶”ê°€ì‹œ gubun, gubunName í•­ëª© ì¶”ê°€
+		// Å×ÀÌºí Ãß°¡½Ã gubun, gubunName Ç×¸ñ Ãß°¡
 		if(gubun == null || gubun.equals("")) {
 			model.addAttribute("gubun", "gas");
-			model.addAttribute("gubunName", "ê°€ìŠ¤");
+			model.addAttribute("gubunName", "°¡½º");
 		} else if(gubun.equals("gas")) {
 			model.addAttribute("gubun", "gas");
-			model.addAttribute("gubunName", "ê°€ìŠ¤");
+			model.addAttribute("gubunName", "°¡½º");
 		} else if(gubun.equals("water")) {
 			model.addAttribute("gubun", "water");
-			model.addAttribute("gubunName", "ìœ ë¥˜");
+			model.addAttribute("gubunName", "¼öµµ");
 		} else if(gubun.equals("electric")) {
 			model.addAttribute("gubun", "electric");
-			model.addAttribute("gubunName", "ì „ê¸°");
+			model.addAttribute("gubunName", "Àü±â");
 		}
 		if(cFloor == null || cFloor.equals("")) {
 			model.addAttribute("cFloor", "4");
@@ -423,7 +422,7 @@ public class dataController {
 		
 		String sqlid = "data.inputWriteProc";
 		
-		// í…Œì´ë¸” ì¶”ê°€ì‹œ sTable í•­ëª© ì¶”ê°€
+		// Å×ÀÌºí Ãß°¡½Ã sTable Ç×¸ñ Ãß°¡
 		String gubun = (String)commandMap.get("gubun");
 		if(gubun.equals("gas")) {
 			commandMap.put("sTable", "TB_GAS2");
@@ -461,7 +460,7 @@ public class dataController {
 		
 		String C_GUBUN = (String)commandMap.get("C_GUBUN");
 		
-		// í…Œì´ë¸” ì¶”ê°€ì‹œ sTable í•­ëª© ì¶”ê°€
+		// Å×ÀÌºí Ãß°¡½Ã sTable Ç×¸ñ Ãß°¡
 		if(C_GUBUN.equals("gas")) {
 			commandMap.put("sTable", "TB_GAS2");
 		} else if(C_GUBUN.equals("water")) {

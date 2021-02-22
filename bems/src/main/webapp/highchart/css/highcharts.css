@@ -60,7 +60,7 @@
 /* Axes */
 .highcharts-axis-line {
   fill: none;
-  stroke: #3b453d;
+  stroke: #ccd6eb;
 }
 
 .highcharts-yaxis .highcharts-axis-line {
@@ -87,7 +87,7 @@
 }
 
 .highcharts-tick {
-  stroke: #3b453d;
+  stroke: #ccd6eb;
 }
 
 .highcharts-yaxis .highcharts-tick {
@@ -104,7 +104,7 @@
 }
 
 .highcharts-crosshair-category {
-  stroke: #3b453d;
+  stroke: #ccd6eb;
   stroke-opacity: 0.25;
 }
 
@@ -650,7 +650,7 @@ input.highcharts-range-selector {
 
 .highcharts-flags-series .highcharts-point-hover {
   stroke: #000000;
-  fill: #3b453d;
+  fill: #ccd6eb;
 }
 
 .highcharts-flags-series .highcharts-point text {

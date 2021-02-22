@@ -98,7 +98,7 @@
             // Highstock specific
             navigator: {
                 xAxis: {
-                    gridLineColor: '#3b453d'
+                    gridLineColor: '#D0D0D8'
                 }
             },
             rangeSelector: {

@@ -39,7 +39,7 @@
                 borderWidth: 2,
                 className: 'dark-container',
                 plotBackgroundColor: 'rgba(255, 255, 255, .1)',
-                plotBorderColor: '#3b453d',
+                plotBorderColor: '#CCCCCC',
                 plotBorderWidth: 1
             },
             title: {
@@ -97,7 +97,7 @@
             tooltip: {
                 backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 style: {
-                    color: '#0b4a45'
+                    color: '#F0F0F0'
                 }
             },
             toolbar: {

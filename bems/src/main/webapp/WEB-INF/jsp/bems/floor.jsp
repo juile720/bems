@@ -67,7 +67,7 @@ jQuery(function($){
     <div class="both">
       <div class="fl">
         <div class="top_uit">
-          <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
+        <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
         </div>
         <ul class="lnb_h">
           <li><a href="#" id="total">메인화면</a> </li>
@@ -219,24 +219,17 @@ jQuery(function($){
         <div class="grid_inner mg_b15 mg_l15 h685">
         	<div class="tab_list m1" style="height:112px;">
                 <ul>
-               <li class="m1"><a href="#"><span>추이 그래프</span></a>
-                    <ul>
-						<li class="tr">
-                               <div class="list_legend">
-                         	  	  <div class="gre01"></div>전기
-                                  <div class="ye"></div>가스
-                                  <div class="sk"></div>유류
-                        	  </div>
-                	    </li>
-				<li>
-                            <div class="box_type10">
-                                <div id="container1" style="height: 180px; margin: 50px auto 0"></div>
-                                <div id="container2"  style="height: 325px; margin: 25px auto 0"></div>
-                            </div>
-                        </li>
+                <li class="m1"><a href="#"><span>추이 그래프</span></a>
+                    <ul> 
+                	<li> 
+	                    <div class="box_type10"> <!-- 1920 일때 height: 515px; / 외기온도 : #2196f3 /실내온도 : #f51f6b  /외기온도 : #ffc600 / 에너지사용량 : #1ff5b1 / 전기 #a3fe00 / 가스 #ffaa00 / 수도 #3ddcf7<br>
+	           				 3840 일때 height: 1030px; -->
+	           				 <div id="container1" style="height: 180px; margin: 0 auto"></div>
+	           				 <div id="container2"  style="height: 325px; margin: 25px auto 0"></div>
+	           			</div>
+                    </li>                 
                     </ul>
                 </li>
-
                 <li class="m2"><a href="#"><span>누적 그래프</span></a>
                      <ul>
                     <li class="tr">
@@ -245,7 +238,14 @@ jQuery(function($){
                           <input type="checkbox" id="실내온도" class="checkbox-style" /><label for="실내온도"></label><div class="pi02"></div>실내온도
                           <input type="checkbox" id="에너지사용량" class="checkbox-style" /><label for="에너지사용량"></label><div class="em03"></div>에너지사용량
                        </div>
-                    </li>  
+                    </li> 
+                    <li class="tr">
+                        <div class="list_legend">
+                           	<div class="gre01"></div>전기
+                            <div class="ye"></div>가스
+                            <div class="sk"></div>수도
+                       </div>
+                    </li>   
                 	<li> 
                     <div class="box_type10"> 
                     <!-- 1920 일때 height: 515px; / 외기온도 : #2196f3 /실내온도 : #f51f6b  /외기온도 : #ffc600 / 에너지사용량 : #1ff5b1 / 전기 #a3fe00 / 가스 #ffaa00 / 수도 #3ddcf7<br>
@@ -525,6 +525,18 @@ jQuery(function($){
 	    fn_resource();
 	});
 	
+	$("#floor").on("click", function(e){ 
+	    e.preventDefault();
+	    fn_floor();
+	});
+	
+	function fn_floor(floor){
+	    var comSubmit = new ComSubmit();
+	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
+	    comSubmit.addParam("C_FLOOR", floor);
+	    comSubmit.submit();
+	}
+	
 	function fn_resource(){
 	    var comSubmit = new ComSubmit();
 	    comSubmit.setUrl("<c:url value='/data/energyResource.do' />");
@@ -589,11 +601,11 @@ jQuery(function($){
 	var options = {
 		    chart: {
 		        zoomType: 'xy'
-				,renderTo: 'container0'
+				,renderTo: 'container1'
 				,marginTop: 30
 				,marginRight: 70
 				,marginBottom: 25
-				,backgroundColor :'#f2f2f2'
+				,backgroundColor :'#323b44'
 		    },
 			credits: {
 				enabled: false
@@ -613,7 +625,7 @@ jQuery(function($){
 		        },
 	            labels: {
 	                style: {
-	                    color: 'black'
+	                    color: 'white'
 	                }
 	            }
 		    },
@@ -622,7 +634,7 @@ jQuery(function($){
 		        crosshair: true,
 	            labels: {
 	                style: {
-	                    color: 'black'
+	                    color: 'white'
 	                }
 	            }
 		        
@@ -639,8 +651,8 @@ jQuery(function($){
 				verticalAlign: 'top',
 				y: 55,
 				floating: true,// true,
-				backgroundColor :'#f2f2f2',
-				itemStyle:{color:'#1f2024'}
+				backgroundColor :'#323b44',
+				itemStyle:{color:'#f0f0f0'}
 				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 			},
 			exporting: {
@@ -652,7 +664,7 @@ jQuery(function($){
 	var options1 = {
 		    chart: {
 		        type: 'column',renderTo: 'container2'
-		        ,backgroundColor :'#f2f2f2'
+		        ,backgroundColor :'#323b44'
 		    },
 			legend: {
 				layout: 'horizontal',//'vertical',
@@ -661,8 +673,8 @@ jQuery(function($){
 				verticalAlign: 'top',
 				y: 5,
 				floating: false,// true,
-				backgroundColor :'#f2f2f2',
-				itemStyle:{color:'#1f2024'}
+				backgroundColor :'#323b44',
+				itemStyle:{color:'#f0f0f0'}
 				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 			},
 			exporting: {
@@ -682,7 +694,7 @@ jQuery(function($){
 		        crosshair: true,
 	            labels: {
 	                style: {
-	                    color: 'black'
+	                    color: 'white'
 	                }
 	            }
 		    }],
@@ -693,7 +705,7 @@ jQuery(function($){
 		        },
 	            labels: {
 	                style: {
-	                    color: 'black'
+	                    color: 'white'
 	                }
 	            }
 
@@ -720,27 +732,31 @@ jQuery(function($){
 		    	name: '가스',
 		        data: data2
 		    }, {
-		    	name: '유류',
+		    	name: '수도',
 		        data: data3
 		    }]
 		    
 		}
-function getGraphData() {
-		
+	jQuery(function($){
 		$.ajax({ 
 		    type:"POST",  
-		    url:"/pagetopGraph.do",
+		    url:"/pageFloorTemp.do",
 		    dataType: 'json',
-		    success:function(data){
-		    	console.log(data);
-		    	var result = data.categories;
-		    	options.xAxis.categories = JSON.parse(result); //"'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'";
-	
-	            $.each(data.series, function(i, seriesItem) {
-	                console.log(i + " " + seriesItem) ;
+		    success:function(data1){
+		    	options.xAxis[0].categories = [];
+		    	for(var i = 0; i < data1.categories.length; i++) {
+		    		options.xAxis[0].categories.push(data1.categories[i]);
+		    	}
+		    	
+	            $.each(data1.series, function(i, seriesItem) {
 	                var series = { data: []	};
 	                
-	                series.name = seriesItem.name;
+	                if (seriesItem.name == "I"){
+	                	series.name = "실내온도";
+	                }else {
+	                	series.name = "외기온도";
+	                }
+	                //series.name = seriesItem.name;
 	                series.color = seriesItem.color;
 	                series.type = seriesItem.type;
 
@@ -751,150 +767,10 @@ function getGraphData() {
 	                options.series[i] = series;
 	            });
 	            
-	            chart = new Highcharts.Chart(options);
+	            chart1 = new Highcharts.Chart(options);
 	            
 		    }
 		});
-	}
-	
-	var options = {
-		    chart: {
-		        zoomType: 'xy'
-				,renderTo: 'container1'
-				,marginTop: 30
-				,marginRight: 70
-				,marginBottom: 25
-				,backgroundColor :'#f2f2f2'
-		    },
-			credits: {
-				enabled: false
-			},
-			title: {
-				text: '',
-				x: -20 //center
-			},
-			subtitle: {
-				text: '',
-				x: -20
-			},
-		    xAxis: [{
-		        categories: [],//['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-		        crosshair: true,
-	            labels: {
-	                style: {
-	                    color: 'black'
-	                }
-	            }
-		    }],
-
-		    yAxis: [{ // Primary yAxis
-		        title: {
-		            text: '전기'
-//		            ,
-//		            style: {
-//		                color: Highcharts.getOptions().colors[0]
-//		            }
-		        },
-		        labels: {
-		            format: '{value} KWH'
-//		            ,
-//		            style: {
-//		                color: Highcharts.getOptions().colors[0]
-//		            }
-		        },
-
-		        opposite: true
-
-		    }, { // Secondary yAxis
-		        gridLineWidth: 0,
-		        title: {
-		            text: '가스'
-//		            ,
-//		            style: {
-//		                color: Highcharts.getOptions().colors[1]
-//		            }
-		        },
-		        labels: {
-		            format: '{value} ㎥'
-//		            ,
-//		            style: {
-//		                color: Highcharts.getOptions().colors[1]
-//		            }
-		        },opposite: true
-			}, { // 3th yAxis
-		        gridLineWidth: 0,
-		        title: {
-		            text: '유류'
-//		            ,
-//		            style: {
-//		                color: Highcharts.getOptions().colors[2]
-//		            }
-		        },
-		        labels: {
-		            format: '{value}㎥'
-//		            ,
-//		            style: {
-//		                color: Highcharts.getOptions().colors[2]
-//		            }
-		        },opposite: true
-			}
-		    ],
-
-			tooltip: {
-		        shared: true
-		    },
-
-			legend: {
-				layout: 'horizontal',//'vertical',
-				align: 'right',
-				x: 580,
-				verticalAlign: 'top',
-				y: 55,
-				floating: false,// true,
-				backgroundColor :'#f2f2f2',
-				itemStyle:{color:'#1f2024'}
-				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-			},
-			exporting: {
-	            enabled: false
-	        },
-			series: []
-		}
-		
-	
-	
-	
-	jQuery(function($){
-		
-		$.ajax({ 
-		    type:"POST",  
-		    url:"/pagetopGraph.do",
-		    dataType: 'json',
-		    success:function(data){
-		    	options.xAxis[0].categories = [];
-		    	for(var i = 0; i < data.categories.length; i++) {
-		    		options.xAxis[0].categories.push(data.categories[i]);
-		    	}
-
-	
-	            $.each(data.series, function(i, seriesItem) {
-	                var series = { data: []	};
-	                
-	                series.name = seriesItem.name;
-	                series.color = seriesItem.color;
-	                series.type = seriesItem.type;
-
-	                $.each(seriesItem.data, function(j, seriesItemData) {
-	                    series.data.push(parseFloat(seriesItemData));
-	                });
-
-	                options.series[i] = series;
-	            });
-	            
-	            chart = new Highcharts.Chart(options);
-	            
-		    }
-		}); 		
 		
 		$.ajax({ 
 		    type:"POST",  
@@ -905,19 +781,15 @@ function getGraphData() {
 		    	for(var i = 0; i < data.categories.length; i++) {
 		    		options1.xAxis[0].categories.push(data.categories[i]);
 		    	}
-		    	
-		    	
 	            $.each(data.series, function(i, seriesItem) {
 	            	var series = {data: []};
-	            	
 	                if (seriesItem.name == "E"){
 	                	series.name = "전기";
 	                }else if (seriesItem.name == "G"){
 	                	series.name = "가스";
 	                }else if (seriesItem.name == "W"){
-	                	series.name = "유류";
+	                	series.name = "수도";
 	                }
-	                
 	                $.each(seriesItem.data, function(j, seriesItemData) {
 	                	if (seriesItem.name == "E" ){
 	                		data1.push({y:parseFloat(seriesItemData)});

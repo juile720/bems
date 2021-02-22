@@ -8709,12 +8709,12 @@
                 minorGridLineWidth: 1,
                 minorTickColor: '#999999',
                 //minorTickWidth: 0,
-                lineColor: '#3b453d',
+                lineColor: '#ccd6eb',
                 lineWidth: 1,
-                gridLineColor: '#3b53d',
+                gridLineColor: '#e6e6e6',
                 // gridLineDashStyle: 'solid',
                 // gridLineWidth: 0,
-                tickColor: '#3b453d'
+                tickColor: '#ccd6eb'
                 // tickWidth: 1
 
             },
@@ -11378,7 +11378,7 @@
 
                         // Presentational attributes
                         graphic.attr({
-                            'stroke': options.color || (categorized ? color('#3b453d').setOpacity(0.25).get() : '#cccccc'),
+                            'stroke': options.color || (categorized ? color('#ccd6eb').setOpacity(0.25).get() : '#cccccc'),
                             'stroke-width': pick(options.width, 1)
                         });
                         if (options.dashStyle) {

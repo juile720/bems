@@ -29,7 +29,7 @@ public class ChartService {
 	private CommonService commonService;
 	
 	/*
-	 * ê±´ë¬¼ì „ì²´ ìƒìœ„ ê·¸ë˜í”„ ë°ì´í„°
+	 * °Ç¹°ÀüÃ¼ »óÀ§ ±×·¡ÇÁ µ¥ÀÌÅÍ
 	 */
 	public dataVO getTotalPageTopGraph(){
 
@@ -39,13 +39,13 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
-    	List<String> y1 = new ArrayList<String>(); // yê°’ ì „ê¸°
-    	List<String> y2 = new ArrayList<String>(); // yê°’ ê°€ìŠ¤
-    	List<String> y3 = new ArrayList<String>(); // yê°’ ìœ ë¥˜
+    	List<String> y1 = new ArrayList<String>(); // y°ª Àü±â
+    	List<String> y2 = new ArrayList<String>(); // y°ª °¡½º
+    	List<String> y3 = new ArrayList<String>(); // y°ª ¼öµµ
     	
-    	String[] categories = null; // xê°’
+    	String[] categories = null; // x°ª
     	
-    	// mapì€ ë¹ˆì¹¸ìœ¼ë¡œ ì±„ì›Œ ë„£ëŠ”ë‹¤.. ì¼ë‹¨ì€..... ë‚˜ì¤‘ì— ê°’ì´ ë“¤ì–´ê°€ì•¼ í•˜ëŠ”..
+    	// mapÀº ºóÄ­À¸·Î Ã¤¿ö ³Ö´Â´Ù.. ÀÏ´ÜÀº..... ³ªÁß¿¡ °ªÀÌ µé¾î°¡¾ß ÇÏ´Â..
 		Map<String,Object> map = new HashMap<String,Object>();
 		
 		try {
@@ -71,7 +71,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y1.get(y));
         	}
        		
-        	list.add(new SeriesBean("ì „ê¸°","#f5d14e","column",dat));
+        	list.add(new SeriesBean("Àü±â","#a3fe00","column",dat));
         	
         	dat = null;
     		dat = new double[y2.size()];
@@ -79,7 +79,7 @@ public class ChartService {
        		for (int y=0; y<y2.size(); y++){
         		dat[y] = Double.parseDouble(y2.get(y));
         	}
-       		list.add(new SeriesBean("ê°€ìŠ¤","#f15d45","spline",dat));
+       		list.add(new SeriesBean("°¡½º","#ffc702","spline",dat));
        		
        		dat = null;
     		dat = new double[y3.size()];
@@ -88,7 +88,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y3.get(y));
         	}
        		
-       		list.add(new SeriesBean("ìœ ë¥˜","#3dddf7","spline",dat));
+       		list.add(new SeriesBean("¼öµµ","#3dddf7","spline",dat));
 
 
     	}catch (Exception e) {
@@ -100,7 +100,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ê±´ë¬¼ì „ì²´ ê°€ìš´ë° ê·¸ë˜í”„ ë°ì´í„° 
+	 * °Ç¹°ÀüÃ¼ °¡¿îµ¥ ±×·¡ÇÁ µ¥ÀÌÅÍ 
 	 */
 	public dataVO getTotalPageMid(String gb, String day1, String day2){
 		String sqlid = "";
@@ -111,15 +111,15 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
-    	List<String> y1 = new ArrayList<String>(); // yê°’ ëƒ‰ë°©
-    	List<String> y2 = new ArrayList<String>(); // yê°’ ë‚œë°©
-    	List<String> y3 = new ArrayList<String>(); // yê°’ ê¸‰íƒ•
-    	List<String> y4 = new ArrayList<String>(); // yê°’ í™˜ê¸°
-    	List<String> y5 = new ArrayList<String>(); // yê°’ ì¡°ëª…
-    	List<String> y6 = new ArrayList<String>(); // yê°’ ì½˜ì„¼íŠ¸
+    	List<String> y1 = new ArrayList<String>(); // y°ª ³Ã¹æ
+    	List<String> y2 = new ArrayList<String>(); // y°ª ³­¹æ
+    	List<String> y3 = new ArrayList<String>(); // y°ª ±ŞÅÁ
+    	List<String> y4 = new ArrayList<String>(); // y°ª È¯±â
+    	List<String> y5 = new ArrayList<String>(); // y°ª Á¶¸í
+    	List<String> y6 = new ArrayList<String>(); // y°ª ÄÜ¼¾Æ®
     	
     	List<String> categories = new ArrayList<String>();
-    	//String[] categories = null; // xê°’
+    	//String[] categories = null; // x°ª
 
     	SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
     	String BeforeDay = "";
@@ -278,7 +278,7 @@ public class ChartService {
        		for (int y=0; y<y2.size(); y++){
         		dat[y] = Double.parseDouble(y2.get(y));
         	}
-       		list.add(new SeriesBean("ë‚œë°©","#ffaa01","line",dat));
+       		list.add(new SeriesBean("³­¹æ","#ffaa01","line",dat));
 */       		
        		dat = null;
     		dat = new double[y2.size()];
@@ -287,7 +287,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y2.get(y));
         	}
        		
-       		list.add(new SeriesBean("3","#5789ff","line",dat));
+       		list.add(new SeriesBean("3","#00b19d","line",dat));
 
        		dat = null;
     		dat = new double[y3.size()];
@@ -325,7 +325,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ê±´ë¬¼ì „ì²´ í•˜ë‹¨ ê·¸ë˜í”„ ë°ì´í„°
+	 * °Ç¹°ÀüÃ¼ ÇÏ´Ü ±×·¡ÇÁ µ¥ÀÌÅÍ
 	 */
 	
 	public dataVO getTotalPageBottomGraph(){
@@ -337,9 +337,9 @@ public class ChartService {
 		double total=0, y1=0,y2=0,y3=0,y4=0,y5=0,y6=0;
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		    	
-    	String[] categories = null; // xê°’
+    	String[] categories = null; // x°ª
     	
-    	// mapì€ ë¹ˆì¹¸ìœ¼ë¡œ ì±„ì›Œ ë„£ëŠ”ë‹¤.. ì¼ë‹¨ì€..... ë‚˜ì¤‘ì— ê°’ì´ ë“¤ì–´ê°€ì•¼ í•˜ëŠ”..
+    	// mapÀº ºóÄ­À¸·Î Ã¤¿ö ³Ö´Â´Ù.. ÀÏ´ÜÀº..... ³ªÁß¿¡ °ªÀÌ µé¾î°¡¾ß ÇÏ´Â..
 		Map<String,Object> map = new HashMap<String,Object>();
 		
 		try {
@@ -369,15 +369,15 @@ public class ChartService {
         		/*
         		if (mapVal.get("C_NAME").toString().equals("A")){
         			total = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
-        		}else if (mapVal.get("C_NAME").toString().trim().equals("ëƒ‰ë°©")){
+        		}else if (mapVal.get("C_NAME").toString().trim().equals("³Ã¹æ")){
         			y1 = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
-        		}else if (mapVal.get("C_NAME").toString().trim().equals("ê¸‰íƒ•")){
+        		}else if (mapVal.get("C_NAME").toString().trim().equals("±ŞÅÁ")){
         			y2 = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
-        		}else if (mapVal.get("C_NAME").toString().trim().equals("í™˜ê¸°")){
+        		}else if (mapVal.get("C_NAME").toString().trim().equals("È¯±â")){
         			y3 = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
-        		}else if (mapVal.get("C_NAME").toString().trim().equals("ì¡°ëª…")){
+        		}else if (mapVal.get("C_NAME").toString().trim().equals("Á¶¸í")){
         			y4 = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
-        		}else if (mapVal.get("C_NAME").toString().trim().equals("ì½˜ì„¼íŠ¸")){
+        		}else if (mapVal.get("C_NAME").toString().trim().equals("ÄÜ¼¾Æ®")){
         			y5 = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
         		}/*else if (mapVal.get("NAME").toString().trim().equals("6")){
         			y6 = Double.parseDouble(String.valueOf(mapVal.get("WATT")));
@@ -389,7 +389,7 @@ public class ChartService {
 //    		dat = new double[5];
 //    		dat[0] = y1;dat[1] = y2;dat[2] = y3;dat[3] = y4;dat[4] = y5; //dat[5] = y6;
        		
-        	list.add(new SeriesBean("ëƒ‰ë°©","","",dat));
+        	list.add(new SeriesBean("³Ã¹æ","","",dat));
         	
        		dat = null;
     		dat = new double[1];
@@ -405,7 +405,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ì—ë„ˆì§€ ìš©ë„ë³„ í™”ë©´ 1ë²ˆ ê·¸ë˜í”„ 
+	 * ¿¡³ÊÁö ¿ëµµº° È­¸é 1¹ø ±×·¡ÇÁ 
 	 */
 	public dataVO getEnergyFirstGraph(String gb, String day1, String day2){
 
@@ -415,12 +415,12 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 				
-    	List<String> y1 = new ArrayList<String>(); // yê°’ ëƒ‰ë°© -- ì‚¬ìš©ì•ˆí•¨
-    	List<String> y2 = new ArrayList<String>(); // yê°’ ëƒ‰ë‚œë°©
-    	List<String> y3 = new ArrayList<String>(); // yê°’ ê¸‰íƒ•
-    	List<String> y4 = new ArrayList<String>(); // yê°’ í™˜ê¸°
-    	List<String> y5 = new ArrayList<String>(); // yê°’ ì¡°ëª…
-    	List<String> y6 = new ArrayList<String>(); // yê°’ ì½˜ì„¼íŠ¸
+    	List<String> y1 = new ArrayList<String>(); // y°ª ³Ã¹æ -- »ç¿ë¾ÈÇÔ
+    	List<String> y2 = new ArrayList<String>(); // y°ª ³Ã³­¹æ
+    	List<String> y3 = new ArrayList<String>(); // y°ª ±ŞÅÁ
+    	List<String> y4 = new ArrayList<String>(); // y°ª È¯±â
+    	List<String> y5 = new ArrayList<String>(); // y°ª Á¶¸í
+    	List<String> y6 = new ArrayList<String>(); // y°ª ÄÜ¼¾Æ®
     	
     	List<String> cat = new ArrayList<String>(); 
     	List<String> tmp = new ArrayList<String>();
@@ -544,7 +544,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y1.get(y));
         	}
        		
-        	list.add(new SeriesBean("ëƒ‰ë°©","#3dddf7","column",dat));
+        	list.add(new SeriesBean("³Ã¹æ","#3dddf7","column",dat));
 */        	
         	dat = null;
     		dat = new double[y2.size()];
@@ -552,7 +552,7 @@ public class ChartService {
        		for (int y=0; y<y2.size(); y++){
         		dat[y] = Double.parseDouble(y2.get(y));
         	}
-       		list.add(new SeriesBean("ëƒ‰ë‚œë°©","#ffaa01","column",dat));
+       		list.add(new SeriesBean("³Ã³­¹æ","#ffaa01","column",dat));
        		
        		dat = null;
     		dat = new double[y3.size()];
@@ -561,7 +561,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y3.get(y));
         	}
        		
-       		list.add(new SeriesBean("ê¸‰íƒ•","#5789ff","column",dat));
+       		list.add(new SeriesBean("±ŞÅÁ","#00b19d","column",dat));
 
        		dat = null;
     		dat = new double[y4.size()];
@@ -570,7 +570,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y4.get(y));
         	}
        		
-       		list.add(new SeriesBean("í™˜ê¸°","#7266ba","column",dat));
+       		list.add(new SeriesBean("È¯±â","#7266ba","column",dat));
 
        		dat = null;
     		dat = new double[y5.size()];
@@ -579,7 +579,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y5.get(y));
         	}
        		
-       		list.add(new SeriesBean("ì¡°ëª…","#f76397","column",dat));
+       		list.add(new SeriesBean("Á¶¸í","#f76397","column",dat));
        		
        		dat = null;
     		dat = new double[y6.size()];
@@ -588,7 +588,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(y6.get(y));
         	}
        		
-       		list.add(new SeriesBean("ì½˜ì„¼íŠ¸","#fe8030","column",dat));
+       		list.add(new SeriesBean("ÄÜ¼¾Æ®","#fe8030","column",dat));
        		
        		dat = null;
     		dat = new double[tmp.size()];
@@ -597,7 +597,7 @@ public class ChartService {
         		dat[y] = Double.parseDouble(tmp.get(y));
         	}
        		
-       		list.add(new SeriesBean("ì™¸ê¸°ì˜¨ë„","#fe8030","line",dat));
+       		list.add(new SeriesBean("¿Ü±â¿Âµµ","#fe8030","line",dat));
        		
        		dat = null;
     		dat = new double[hum.size()];
@@ -605,7 +605,7 @@ public class ChartService {
        		for (int y=0; y<hum.size(); y++){
         		dat[y] = Double.parseDouble(hum.get(y));
         	}
-       		list.add(new SeriesBean("ì™¸ê¸°ìŠµë„","#fe8030","line",dat));
+       		list.add(new SeriesBean("¿Ü±â½Àµµ","#fe8030","line",dat));
        		
        		for (int k = 0; k <6; k++){
            		dat = null;
@@ -632,7 +632,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ì—ë„ˆì§€ ì›ë³„ í™”ë©´ íŒŒì´ ê·¸ë˜í”„ / ê¸ˆì•¡ 
+	 * ¿¡³ÊÁö ¿øº° È­¸é ÆÄÀÌ ±×·¡ÇÁ / ±İ¾× 
 	 */
 	public dataVO getEnergyResourceFirstGraph(String gb, String day1, String day2){
 
@@ -642,22 +642,22 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
-    	List<String> y1 = new ArrayList<String>(); // yê°’ ì „ë ¥
-    	List<String> y2 = new ArrayList<String>(); // yê°’ ê°€ìŠ¤
-    	List<String> y3 = new ArrayList<String>(); // yê°’ ìœ ë¥˜
-    	List<String> y4 = new ArrayList<String>(); // yê°’ íƒœì–‘ê´‘
-    	List<String> y5 = new ArrayList<String>(); // yê°’ íƒœì–‘ì—´
-    	List<String> y6 = new ArrayList<String>(); // yê°’ ì§€ì—´
+    	List<String> y1 = new ArrayList<String>(); // y°ª Àü·Â
+    	List<String> y2 = new ArrayList<String>(); // y°ª °¡½º
+    	List<String> y3 = new ArrayList<String>(); // y°ª ¼öµµ
+    	List<String> y4 = new ArrayList<String>(); // y°ª ÅÂ¾ç±¤
+    	List<String> y5 = new ArrayList<String>(); // y°ª ÅÂ¾ç¿­
+    	List<String> y6 = new ArrayList<String>(); // y°ª Áö¿­
     	
-    	List<String> y11 = new ArrayList<String>(); // yê°’ ì „ë ¥ê¸ˆì•¡
-    	List<String> y21 = new ArrayList<String>(); // yê°’ ê°€ìŠ¤ê¸ˆì•¡
-    	List<String> y31 = new ArrayList<String>(); // yê°’ ìœ ë¥˜ê¸ˆì•¡
-    	List<String> y41 = new ArrayList<String>(); // yê°’ íƒœì–‘ê´‘ê¸ˆì•¡
-    	List<String> y51 = new ArrayList<String>(); // yê°’ íƒœì–‘ì—´ê¸ˆì•¡
-    	List<String> y61 = new ArrayList<String>(); // yê°’ ì§€ì—´ê¸ˆì•¡
+    	List<String> y11 = new ArrayList<String>(); // y°ª Àü·Â±İ¾×
+    	List<String> y21 = new ArrayList<String>(); // y°ª °¡½º±İ¾×
+    	List<String> y31 = new ArrayList<String>(); // y°ª ¼öµµ±İ¾×
+    	List<String> y41 = new ArrayList<String>(); // y°ª ÅÂ¾ç±¤±İ¾×
+    	List<String> y51 = new ArrayList<String>(); // y°ª ÅÂ¾ç¿­±İ¾×
+    	List<String> y61 = new ArrayList<String>(); // y°ª Áö¿­±İ¾×
     	
     	List<String> cat = new ArrayList<String>(); 
-    	String[] categories = null; // xê°’
+    	String[] categories = null; // x°ª
     	double tot = 0.0;
     	
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -710,99 +710,99 @@ public class ChartService {
        		for (int y=0; y<y1.size(); y++){
         		dat[y] = (Double.parseDouble(y1.get(y)) / tot) * 100;
         	}
-       		list.add(new SeriesBean("ì „ë ¥","#3dddf7","column",dat));
+       		list.add(new SeriesBean("Àü·Â","#3dddf7","column",dat));
        		dat = null; dat = new double[y1.size()];
        		for (int y=0; y<y1.size(); y++){
         		dat[y] = Double.parseDouble(y1.get(y));
         	}
-       		list.add(new SeriesBean("ì „ë ¥val","#3dddf7","column",dat));
+       		list.add(new SeriesBean("Àü·Âval","#3dddf7","column",dat));
     		dat = null; dat = new double[y11.size()];
 
        		for (int y=0; y<y11.size(); y++){
         		dat[y] = Double.parseDouble(y11.get(y));
         	}
-       		list.add(new SeriesBean("ì „ë ¥ê¸ˆì•¡","#3dddf7","column",dat));
+       		list.add(new SeriesBean("Àü·Â±İ¾×","#3dddf7","column",dat));
        		
     		dat = null; dat = new double[y2.size()];
        		for (int y=0; y<y2.size(); y++){
        			dat[y] = (Double.parseDouble(y2.get(y)) / tot) * 100;
         	}
-       		list.add(new SeriesBean("ê°€ìŠ¤","#3dddf7","column",dat));
+       		list.add(new SeriesBean("°¡½º","#3dddf7","column",dat));
     		dat = null; dat = new double[y2.size()];
        		for (int y=0; y<y2.size(); y++){
        			dat[y] = Double.parseDouble(y2.get(y)) ;
         	}
-       		list.add(new SeriesBean("ê°€ìŠ¤val","#3dddf7","column",dat));
+       		list.add(new SeriesBean("°¡½ºval","#3dddf7","column",dat));
     		dat = null; dat = new double[y21.size()];
        		for (int y=0; y<y21.size(); y++){
         		dat[y] = Double.parseDouble(y21.get(y));
         	}
-       		list.add(new SeriesBean("ê°€ìŠ¤ê¸ˆì•¡","#3dddf7","column",dat));
+       		list.add(new SeriesBean("°¡½º±İ¾×","#3dddf7","column",dat));
 			
     		dat = null; dat = new double[y3.size()];
        		for (int y=0; y<y3.size(); y++){
        			dat[y] = (Double.parseDouble(y3.get(y)) / tot) * 100;
         	}
-       		list.add(new SeriesBean("ìœ ë¥˜","#3dddf7","column",dat));
+       		list.add(new SeriesBean("¼öµµ","#3dddf7","column",dat));
     		dat = null; dat = new double[y3.size()];
        		for (int y=0; y<y3.size(); y++){
        			dat[y] = Double.parseDouble(y3.get(y)) ;
         	}
-       		list.add(new SeriesBean("ìœ ë¥˜val","#3dddf7","column",dat));
+       		list.add(new SeriesBean("¼öµµval","#3dddf7","column",dat));
        		dat = null; dat = new double[y31.size()];
        		for (int y=0; y<y31.size(); y++){
         		dat[y] = Double.parseDouble(y31.get(y));
         	}
-       		list.add(new SeriesBean("ìœ ë¥˜ê¸ˆì•¡","#3dddf7","column",dat));
+       		list.add(new SeriesBean("¼öµµ±İ¾×","#3dddf7","column",dat));
        		
        		dat = null; dat = new double[y4.size()];
        		for (int y=0; y<y4.size(); y++){
        			dat[y] = (Double.parseDouble(y4.get(y)) / tot) * 100;
         	}
-       		list.add(new SeriesBean("íƒœì–‘ê´‘","#3dddf7","column",dat));
+       		list.add(new SeriesBean("ÅÂ¾ç±¤","#3dddf7","column",dat));
        		dat = null; dat = new double[y4.size()];
        		for (int y=0; y<y4.size(); y++){
        			dat[y] = Double.parseDouble(y4.get(y));
         	}
-       		list.add(new SeriesBean("íƒœì–‘ê´‘val","#3dddf7","column",dat));
+       		list.add(new SeriesBean("ÅÂ¾ç±¤val","#3dddf7","column",dat));
        		
        		dat = null; dat = new double[y41.size()];
        		for (int y=0; y<y41.size(); y++){
         		dat[y] = Double.parseDouble(y41.get(y));
         	}
-       		list.add(new SeriesBean("íƒœì–‘ê´‘ê¸ˆì•¡","#3dddf7","column",dat));
+       		list.add(new SeriesBean("ÅÂ¾ç±¤±İ¾×","#3dddf7","column",dat));
        		
        		dat = null; dat = new double[y5.size()];
        		for (int y=0; y<y5.size(); y++){
        			dat[y] = (Double.parseDouble(y5.get(y)) / tot) * 100;
         	}
-       		list.add(new SeriesBean("íƒœì–‘ì—´","#3dddf7","column",dat));
+       		list.add(new SeriesBean("ÅÂ¾ç¿­","#3dddf7","column",dat));
        		dat = null; dat = new double[y5.size()];
        		for (int y=0; y<y5.size(); y++){
        			dat[y] = Double.parseDouble(y5.get(y));
         	}
-       		list.add(new SeriesBean("íƒœì–‘ì—´val","#3dddf7","column",dat));
+       		list.add(new SeriesBean("ÅÂ¾ç¿­val","#3dddf7","column",dat));
        		dat = null; dat = new double[y51.size()];
        		for (int y=0; y<y51.size(); y++){
         		dat[y] = Double.parseDouble(y51.get(y));
         	}
-       		list.add(new SeriesBean("íƒœì–‘ì—´ê¸ˆì•¡","#3dddf7","column",dat));
+       		list.add(new SeriesBean("ÅÂ¾ç¿­±İ¾×","#3dddf7","column",dat));
        		
        		dat = null; dat = new double[y6.size()];
        		for (int y=0; y<y6.size(); y++){
        			dat[y] = (Double.parseDouble(y6.get(y)) / tot) * 100;
         	}
-       		list.add(new SeriesBean("ì§€ì—´","#3dddf7","column",dat));
+       		list.add(new SeriesBean("Áö¿­","#3dddf7","column",dat));
        		dat = null; dat = new double[y6.size()];
        		for (int y=0; y<y6.size(); y++){
        			dat[y] = Double.parseDouble(y6.get(y));
         	}
-       		list.add(new SeriesBean("ì§€ì—´val","#3dddf7","column",dat));
+       		list.add(new SeriesBean("Áö¿­val","#3dddf7","column",dat));
        		dat = null; dat = new double[y61.size()];
        		for (int y=0; y<y61.size(); y++){
         		dat[y] = Double.parseDouble(y61.get(y));
         	}
-       		list.add(new SeriesBean("ì§€ì—´ê¸ˆì•¡","#3dddf7","column",dat));
+       		list.add(new SeriesBean("Áö¿­±İ¾×","#3dddf7","column",dat));
        		
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -813,7 +813,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ì—ë„ˆì§€ ì›ë³„ í™”ë©´ spline ê·¸ë˜í”„  
+	 * ¿¡³ÊÁö ¿øº° È­¸é spline ±×·¡ÇÁ  
 	 */
 	public dataVO getEnergyResourceSecondGraph(String day1, String day2){
 
@@ -823,7 +823,7 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
-    	String[] categories = null; // xê°’ ë³€ìˆ˜ê°’ì˜  ì›” ì¼
+    	String[] categories = null; // x°ª º¯¼ö°ªÀÇ  ¿ù ÀÏ
     	
 		Map<String,Object> map = new HashMap<String,Object>();
 
@@ -975,7 +975,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ì—ë„ˆì§€ ì›ë³„ í™”ë©´ Column ê·¸ë˜í”„  
+	 * ¿¡³ÊÁö ¿øº° È­¸é Column ±×·¡ÇÁ  
 	 */
 	public dataVO getEnergyResourceThridGraph(String day1){
 		String sqlid = "data.getEnergyResourceGraph3";
@@ -984,7 +984,7 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
-    	String[] categories = null; // xê°’ ë³€ìˆ˜ê°’ì˜  ì›” ì¼
+    	String[] categories = null; // x°ª º¯¼ö°ªÀÇ  ¿ù ÀÏ
     	categories = new String[1];
 		Map<String,Object> map = new HashMap<String,Object>();
 
@@ -1030,7 +1030,7 @@ public class ChartService {
 	}
 
 	/*
-	 * ì—ë„ˆì§€ ì›ë³„ í™”ë©´ line ê·¸ë˜í”„  
+	 * ¿¡³ÊÁö ¿øº° È­¸é line ±×·¡ÇÁ  
 	 */
 	public dataVO getEnergyResourceForthGraph(String day1){
 		String sqlid = "data.getEnergyResourceGraph4";
@@ -1039,7 +1039,7 @@ public class ChartService {
 		
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
-    	String[] categories = null; // xê°’ ë³€ìˆ˜ê°’ì˜  ì›” ì¼
+    	String[] categories = null; // x°ª º¯¼ö°ªÀÇ  ¿ù ÀÏ
     	categories = new String[1];
 		Map<String,Object> map = new HashMap<String,Object>();
 
@@ -1189,7 +1189,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ê°ì¸µ line ê·¸ë˜í”„  (ë‚´ë¶€ì˜¨ë„ ì™¸ë¶€ì˜¨ë„)
+	 * °¢Ãş line ±×·¡ÇÁ  (³»ºÎ¿Âµµ ¿ÜºÎ¿Âµµ)
 	 */
 	public dataVO getFloorTemp(String yyyy){
 		String sqlid = "data.getFloorgraphtemp";
@@ -1197,7 +1197,7 @@ public class ChartService {
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
 		double[] dat1 = null, dat2 = null;
-		String[] categories = null; // xê°’ ë…„ì›”
+		String[] categories = null; // x°ª ³â¿ù
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("YYYY", yyyy);
@@ -1236,7 +1236,7 @@ public class ChartService {
 	}
 	
 	/*
-	 * ê°ì¸µ bar ê·¸ë˜í”„  (ì „ê¸° ìœ ë¥˜ ê°€ìŠ¤)
+	 * °¢Ãş bar ±×·¡ÇÁ  (Àü±â ¼öµµ °¡½º)
 	 */
 	public dataVO getFloorkwh(String yyyy){
 		String sqlid = "data.getFloorgraphUse";
@@ -1244,7 +1244,7 @@ public class ChartService {
 		List<SeriesBean> list = new ArrayList<SeriesBean>();
 		
 		double[] dat1 = null, dat2 = null, dat3 = null;
-		String[] categories = null; // xê°’ ë…„ì›”
+		String[] categories = null; // x°ª ³â¿ù
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("YYYY", yyyy);
@@ -1274,7 +1274,7 @@ public class ChartService {
         		}
 			}
 			
-			list.add(new SeriesBean("E","#f15d45","column",dat1));
+			list.add(new SeriesBean("E","#a3fe00","column",dat1));
 			list.add(new SeriesBean("G","#ffaa00","column",dat2));
 			list.add(new SeriesBean("W","#3ddcf7","column",dat2));
 			

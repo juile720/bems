@@ -2140,7 +2140,7 @@
             states: {
                 hover: {
                     lineColor: '#000000',
-                    fillColor: '#3b453d'
+                    fillColor: '#ccd6eb'
                 }
             },
             style: {
@@ -3357,7 +3357,7 @@
                     tickLength: 0,
 
                     lineWidth: 0,
-                    gridLineColor: '#3b453d',
+                    gridLineColor: '#e6e6e6',
                     gridLineWidth: 1,
 
                     tickPixelInterval: 200,

@@ -1,0 +1,63 @@
+
+
+
+body{background:#7bad13;}
+#wrap{min-width:1900px;min-height:1080px; margin:0 auto;_text-align:left;}
+#container{width:100%;display:inline-block;padding:20px}
+#container:after{display:block;clear:both;content:''}
+.grid_wrap .brick01{float:left; width: 100%;}
+.grid_wrap .brick01-l {float: left;width: 65%;}
+.grid_wrap .brick01-r {float: right;width: 35%;}
+.grid_wrap .brick02-l {float: left;width: 50%;}
+.grid_wrap .brick02-r {float: right;width: 50%;}
+.grid_wrap .brick03-l {float: left;width: 15%;}
+.grid_wrap .brick03-l01 {float: left;width: 60%;}
+.grid_wrap .brick03-r {float: right;width: 25%;}
+.grid_wrap .brick03-r01 {float: right;width: 85%;}
+.grid {overflow: hidden;width:100%;padding: 0; }
+.grid_inner { position: relative; background:#f2f2f2; border:1px solid #aec5dc;border-radius: 5px;padding:15px 15px;}
+.grid_inner01 { position: relative;border:1px solid #10385e; background:#f2f2f2; border-radius: 5px;}
+.grid_inner02 { position: relative; background:#f2f2f2; border:1px solid #10385e;border-radius: 5px;padding:20px;}
+
+.grid_inner img{border-radius: 5px;position:absolute;bottom:0;left:0;width:100%}
+.grid_inner img.floor{margin:20px 35px ;width:75%;}
+
+.h240{height:240px}
+.h260{height:260px}
+.h270{height:270px}
+.h290{height:290px}
+.h320{height:320px}
+.h330{height:330px}
+.h455{height:455px}
+.h490{height:490px}
+.h472{height:472px}
+.h625{height:625px}
+.h655{height:655px}
+.h675{height:675px}
+.h685{height:685px}
+.h960{height:960px}
+
+
+@media only screen and (min-width :3800px){
+#wrap{min-width:3800px;min-height:2160px;box-sizing: border-box;font-size:36px;}
+#container{*display:inline-block;_float:left;padding:40px}
+.grid_inner {position: relative; background:#f2f2f2; border:2px solid #10385e;border-radius: 10px;padding:20px 30px;}
+.grid_inner01 {position: relative;border:2px solid #10385e; background:#f2f2f2; border-radius: 10px;}
+.grid_inner02 {position: relative; background:#f2f2f2; border:1px solid #10385e;border-radius: 5px;padding:40px;}
+.grid_inner img.floor{margin:40px 70px ;}
+.h240{height:480px}	
+.h260{height:520px}
+.h270{height:540px}
+.h290{height:580px}
+.h320{height:640px}
+.h330{height:660px}
+.h455{height:910px}
+.h490{height:490px}
+.h472{height:944px}
+.h490{height:980px}
+.h625{height:1250px}
+.h655{height:1310px}
+.h675{height:1350px}
+.h685{height:1370px}
+.h960{height:1920px}
+}

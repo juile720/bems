@@ -14,9 +14,9 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>EAN BEMS</title>
-<link rel="stylesheet" type="text/css" href="/css/layout.css?ver=1">
-<link rel="stylesheet" type="text/css" href="/css/common.css?ver=1">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css?ver=1">
+<link rel="stylesheet" type="text/css" href="/css/layout.css">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -40,7 +40,7 @@
     <div class="both">
       <div class="fl">
         <div class="top_uit">
-          <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
+        <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
         </div>
         <ul class="lnb_h">
           <li><a href="#" id="total">메인화면</a> </li>
@@ -109,7 +109,7 @@
              	<a href="#" class="btn_s" id="pop_energy_cumulative">누적비교표</a>
              </div>
           </div>         
-          <div class="box_type08"> <!--  1920 일때 height: 270px; / 사용량 : #7cc576 / 목차 : #dde8ac  /외기온도 : #f15d45 / 외기습도 : #3ddcf7  <br>
+          <div class="box_type08"> <!--  1920 일때 height: 270px; / 사용량 : #7cc576 / 목차 : #dde8ac  /외기온도 : #ffc600 / 외기습도 : #3ddcf7  <br>
             3840 일때 height: 560px; -->
             
             <div id="container1" style="height: 265px; margin: 0 auto"></div>
@@ -299,6 +299,18 @@
 	    comSubmit.submit();
 	}
 	
+	$("#floor").on("click", function(e){ 
+	    e.preventDefault();
+	    fn_floor();
+	});
+	
+	function fn_floor(floor){
+	    var comSubmit = new ComSubmit();
+	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
+	    comSubmit.addParam("C_FLOOR", "4");
+	    comSubmit.submit();
+	}
+	
 	$("#use").on("click", function(e){ 
 	    e.preventDefault();
 	    fn_use();
@@ -331,17 +343,6 @@
 	    comSubmit.setUrl("<c:url value='/data/energyFacilities.do' />");
 	    comSubmit.submit();
 	}
-	$("#floor").on("click", function(e){ 
-	    e.preventDefault();
-	    fn_floor();
-	});
-	
-	function fn_floor(){
-	    var comSubmit = new ComSubmit();
-	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
-	    comSubmit.addParam("C_FLOOR", "4");
-	    comSubmit.submit();
-	}
 	
 	var options = {
 		    chart: {
@@ -350,7 +351,7 @@
 				,marginTop: 30
 				,marginRight: 70
 				,marginBottom: 25
-				,backgroundColor :'#f2f2f2'
+				,backgroundColor :'#323b44'
 		    },
 			credits: {
 				enabled: false
@@ -368,7 +369,7 @@
 		        crosshair: true,
 	            labels: {
 	                style: {
-	                    color: 'black'
+	                    color: 'white'
 	                }
 	            }
 		    }],
@@ -410,7 +411,7 @@
 			}, { // 3th yAxis
 		        gridLineWidth: 0,
 		        title: {
-		            text: '유류'
+		            text: '수도'
 //		            ,
 //		            style: {
 //		                color: Highcharts.getOptions().colors[2]
@@ -437,9 +438,9 @@
 				verticalAlign: 'top',
 				y: 55,
 				floating: false,// true,
-				backgroundColor :'#f2f2f2',
-				itemStyle:{color:'#0b4a45'}
-				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#f2f2f2'
+				backgroundColor :'#323b44',
+				itemStyle:{color:'#f0f0f0'}
+				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 			},
 			exporting: {
 	            enabled: false
@@ -453,7 +454,7 @@
 				,marginTop: 30
 				,marginRight: 70
 				,marginBottom: 25
-				,backgroundColor :'#f2f2f2'
+				,backgroundColor :'#323b44'
 		    },
 			credits: {
 				enabled: false
@@ -471,7 +472,7 @@
 		        crosshair: true,
 	            labels: {
 	                style: {
-	                    color: 'black'
+	                    color: 'white'
 	                }
 	            }
 		    }],
@@ -487,9 +488,9 @@
 				verticalAlign: 'top',
 				y: 55,
 				floating: true,// true,
-				backgroundColor :'#f2f2f2',
-				itemStyle:{color:'#0b4a45'}
-				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#f2f2f2'
+				backgroundColor :'#323b44',
+				itemStyle:{color:'#f0f0f0'}
+				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 			},
 			exporting: {
 	            enabled: false
@@ -583,14 +584,14 @@
 				$(this).mouseover(function() {
 					$(this).find('a').css({
 						'background' : '#ffffcc',
-						'border' : '1px solid #191c1a'
+						'border' : '1px solid #dddddd'
 					});
 					$(this).find('a').removeClass('ui-state-default');
 					$(this).css('background', '#ffffcc');
 				});
 				
 				$(this).mouseout(function() {
-					$(this).css('background', '#f2f2f2');
+					$(this).css('background', '#ffffff');
 					$(this).find('a').css('background', '');
 					$(this).find('a').addClass('ui-state-default');
 				});

@@ -429,7 +429,7 @@
                             axisGroupBox.y + axisGroupBox.height
                         ])
                         .attr({
-                            stroke: options.tickColor || '#3b453d',
+                            stroke: options.tickColor || '#ccd6eb',
                             'stroke-width': options.tickWidth || 1,
                             zIndex: 7,
                             class: 'grid-wall'

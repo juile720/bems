@@ -14,9 +14,9 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>EAN BEMS</title>
-<link rel="stylesheet" type="text/css" href="/css/layout.css?ver=1">
-<link rel="stylesheet" type="text/css" href="/css/common.css?ver=1">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css?ver=1">
+<link rel="stylesheet" type="text/css" href="/css/layout.css">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -43,7 +43,7 @@
     <div class="both">
       <div class="fl">
         <div class="top_uit">
-          <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
+        <li><a href="../index.jsp"><img src="../../../../img/logo2.png" ></a></li>
         </div>
         <ul class="lnb_h">
           <li><a href="#" id="total">메인화면</a> </li>
@@ -109,13 +109,13 @@
                 <li><strong>전체 사용량</strong> <em>( <span id="itotal"></span> kWh )</em></li>
                 <li>- 전력  <span id="ielect"></span> kWh</li>
                 <li>- 가스  <span id="igas"></span> kWh</li>
-                <li>- 유류  <span id="iwater"></span> m³</li>
+                <li>- 수도  <span id="iwater"></span> m³</li>
                 <li>- 사용요금</li>
              </ul>
              <div class="fr lst_type box_type_s01 r_05">
 <!--                원그래프 넣는곳<br>
               1920 height: 160px <br>3840 height: 320px;
-               <br>전력#f5d14e<br>가스#f15d45<br>수도#3ddcf7 -->
+               <br>전력#a3fe00<br>가스#ffc600<br>수도#3ddcf7 -->
                <div id="container1" style="height: 160px; margin: 0 auto"></div>
              </div>
              <table class="type01">
@@ -132,7 +132,7 @@
                     <td><span id="igaswon"></span> 원</td>
                 </tr>
                 <tr>
-                    <th scope="row">유류</th>
+                    <th scope="row">수도</th>
                     <td><span id="iwaterwon"></span> 원</td>
                 </tr>
                  <tr>
@@ -204,7 +204,7 @@
             <h3>가스</h3>  
             	<div id="container4" style="height: 380px; margin: 0 auto"></div>
 <!--             920 일때 height: 345px; 3840 일때 height: 700px;
-            그래프 : 금월 #f15d45  전년#6fdd9e  -->   	         	
+            그래프 : 금월 #ffc600  전년#6fdd9e  -->   	         	
             </div>
 <!-- 
             <ul class="list_legend01 fr">
@@ -215,7 +215,7 @@
           </div>
           <div class="fl l_04 pd_l10">
           	<div class="box_type11 pd_t10">  
-             <h3>유류</h3>
+             <h3>수도</h3>
              	<div id="container5" style="height: 380px; margin: 0 auto"></div>  
 <!--             그래프 : 금월 #3ddcf7  전년#f66a54 -->   	        	
             </div>
@@ -255,7 +255,7 @@
                 <option value="ALL" id='selectoption'>전체</option>
                 <option value="1">전기</option>
                 <option value="2">가스</option>
-                <option value="3">유류</option>
+                <option value="3">수도</option>
               </select>
             </div>
           </div>
@@ -341,6 +341,18 @@
 		winObject = window.open("/data/pop_trendLog.do", "사용실비누적비교", settings);
 	}
 	
+	$("#floor").on("click", function(e){ 
+	    e.preventDefault();
+	    fn_floor();
+	});
+	
+	function fn_floor(floor){
+	    var comSubmit = new ComSubmit();
+	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
+	    comSubmit.addParam("C_FLOOR", "4");
+	    comSubmit.submit();
+	}
+	
 	$("#total").on("click", function(e){ 
 	    e.preventDefault();
 	    fn_total();
@@ -382,17 +394,6 @@
 	function fn_facilities(){
 	    var comSubmit = new ComSubmit();
 	    comSubmit.setUrl("<c:url value='/data/energyFacilities.do' />");
-	    comSubmit.submit();
-	}
-	$("#floor").on("click", function(e){ 
-	    e.preventDefault();
-	    fn_floor();
-	});
-	
-	function fn_floor(){
-	    var comSubmit = new ComSubmit();
-	    comSubmit.setUrl("<c:url value='/data/floor.do' />");
-	    comSubmit.addParam("C_FLOOR", "4");
 	    comSubmit.submit();
 	}
 	
@@ -492,7 +493,7 @@
 		    	zoomType: 'xy'
 		        ,type: 'pie'
 		        ,renderTo: 'container1'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 			credits: {
 				enabled: false
@@ -509,7 +510,7 @@
 	                dataLabels: {
 	                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
 	                    distance: -45,
-	                    color: "7bbf2c"
+	                    color: "FFFFFF"
 	                }
 		        }
 		    },
@@ -535,7 +536,7 @@
 		    	zoomType: 'xy'
 		        ,type: 'pie'
 		        ,renderTo: 'container2'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 			credits: {
 				enabled: false
@@ -552,7 +553,7 @@
 	                dataLabels: {
 	                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
 	                    distance: -45,
-	                    color: "7bbf2c"
+	                    color: "FFFFFF"
 	                }
 		        }
 		    },
@@ -570,7 +571,7 @@
 		    chart: {
 		        type: 'spline'
 		        ,renderTo: 'container3'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 		    title: {
 		        text: ''
@@ -590,12 +591,12 @@
 		    	categories : [],
 		        labels: {
 		            overflow: 'justify',
-		            style:{color:'black'}
+		            style:{color:'white'}
 		        }
 		    },
 		    yAxis: {
 		        title: {
-		            text: '사용량 (KW)',style:{color:'black'}
+		            text: '사용량 (KW)',style:{color:'white'}
 		        },
 		        minorGridLineWidth: 0,
 		        gridLineWidth: 0,
@@ -639,7 +640,7 @@
 		    chart: {
 		        type: 'spline'
 		        ,renderTo: 'container4'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 		    title: {
 		        text: ''
@@ -659,12 +660,12 @@
 		    	categories : [],
 		        labels: {
 		            overflow: 'justify',
-		            style:{color:'black'}
+		            style:{color:'white'}
 		        }
 		    },
 		    yAxis: {
 		        title: {
-		            text: '사용량 (KW)',style:{color:'black'}
+		            text: '사용량 (KW)',style:{color:'white'}
 		        },
 		        minorGridLineWidth: 0,
 		        gridLineWidth: 0,
@@ -709,7 +710,7 @@
 		    chart: {
 		        type: 'spline'
 		        ,renderTo: 'container5'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 		    title: {
 		        text: ''
@@ -729,13 +730,13 @@
 		    	categories : [],
 		        labels: {
 		            overflow: 'justify',
-		            style:{color:'black'}
+		            style:{color:'white'}
 		        }
 		    },
 		    yAxis: {
 		        title: {
 		            text: '사용량 (m3)',
-		            style:{color:'black'}
+		            style:{color:'white'}
 		        },
 		        minorGridLineWidth: 0,
 		        gridLineWidth: 0,
@@ -779,7 +780,7 @@
 	var options5 = {
 		    chart: {
 		        type: 'column',renderTo: 'container6'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 			exporting: {
 	            enabled: false
@@ -803,14 +804,14 @@
 		        crosshair: true,
 		        labels: {
 		            overflow: 'justify',
-		            style:{color:'black'}
+		            style:{color:'white'}
 		        }
 		    },
 		    yAxis: {
 		        min: 0,
 		        title: {
 		            text: '단위면적당 소비량 (KW)',
-			        style:{color:'black'}
+			        style:{color:'white'}
 		        }
 		    },
 		    tooltip: {
@@ -842,7 +843,7 @@
 	var options6 = {
 		    chart: {
 		        type: 'column',renderTo: 'container7'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 			exporting: {
 	            enabled: false
@@ -862,18 +863,18 @@
 	              }
 	        },
 		    xAxis: {
-		        categories: ['유류'],
+		        categories: ['수도'],
 		        crosshair: true,
 		        labels: {
 		            overflow: 'justify',
-		            style:{color:'black'}
+		            style:{color:'white'}
 		        }
 		    },
 		    yAxis: {
 		        min: 0,
 		        title: {
 		            text: '단위면적당 소비량 (㎥/㎥)',
-			        style:{color:'black'}
+			        style:{color:'white'}
 		        }
 		    },
 		    tooltip: {
@@ -905,7 +906,7 @@
 	var options7 = {
 		    chart: {
 		        renderTo: 'container8'
-		        ,backgroundColor :'#7bbf2c'
+		        ,backgroundColor :'#323b44'
 		    },
 			exporting: {
 	            enabled: false
@@ -981,7 +982,7 @@
 	            		break;
             		case '가스':data1.push({name:seriesItem.name,y:parseFloat(seriesItem.data)});
             			break;
-            		case '유류':data1.push({name:seriesItem.name,y:parseFloat(seriesItem.data)});
+            		case '수도':data1.push({name:seriesItem.name,y:parseFloat(seriesItem.data)});
             			break;
             		case '전력val':
             			tot1 = tot1 + parseFloat(seriesItem.data);$("#ielect").html(numberWithCommas(parseFloat(seriesItem.data)));
@@ -989,7 +990,7 @@
 	        		case '가스val':
 	        			tot1 = tot1 + parseFloat(seriesItem.data);$("#igas").html(numberWithCommas(parseFloat(seriesItem.data)));
 	        			break;
-	        		case '유류val':
+	        		case '수도val':
 	        			tot1 = tot1 + parseFloat(seriesItem.data);$("#iwater").html(numberWithCommas(parseFloat(seriesItem.data)));
 	        			break;		            			
             		case '전력금액':
@@ -1000,7 +1001,7 @@
             			tot1won = tot1won + parseFloat(seriesItem.data);
             			$("#igaswon").html(numberWithCommas(parseFloat(seriesItem.data)));
 	        			break;
-	        		case '유류금액':
+	        		case '수도금액':
             			tot1won = tot1won + parseFloat(seriesItem.data);
             			$("#iwaterwon").html(numberWithCommas(parseFloat(seriesItem.data)));
 	        			break;		            			
@@ -1170,9 +1171,9 @@
                 	}else if (seriesItem.name == "D"){
                 		series.name = '가스목표량';
                 	}else if (seriesItem.name == "E"){
-                		series.name = '유류사용량';
+                		series.name = '수도사용량';
                 	}else if (seriesItem.name == "F"){
-                		series.name = '유류목표량';
+                		series.name = '수도목표량';
                 	}	                
 
 	                series.color = seriesItem.color;

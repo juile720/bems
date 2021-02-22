@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="data">
+	<select id="getData" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			select to_char(t_datetime,'yyyy/mm/dd') as t_time ,c_slave,avg(i_w_now) from tb_history
+			group by to_char(t_datetime,'yyyy/mm/dd'),c_slave
+			order by to_char(t_datetime,'yyyy/mm/dd'),c_slave
+		]]>
+	</select>
+
+	<select id="getDevice" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			select C_MASTER, C_SLAVE, C_NAME, C_IPADDRESS, C_PORT
+			FROM
+			TB_DEVICE
+		]]>
+	</select>
+	<select id="getTest" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			select substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),1,4)
+			||'년'|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),6,2)
+			||'월' --|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),9,2)
+			-- ||'일'|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),12,2)
+			-- ||'시'
+			 as tdate
+			, (select c_name from tb_device where c_master=a.c_master and c_slave=a.c_slave) as name
+			,c_master, c_slave, round(avg(nvl(i_w_now,0)),2) as num
+			from tb_history a
+			group by 
+			substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),1,4)
+			||'년'|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),6,2)
+			||'월' -- || substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),9,2)
+			-- ||'일'|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),12,2)
+			-- ||'시'
+			, c_master, c_slave
+			order by 
+				substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),1,4)
+				||'년'|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),6,2)
+				||'월'-- || substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),9,2)
+				-- ||'일'|| substr(to_char(t_datetime,'yyyy/mm/dd-hh24'),12,2)
+				-- ||'시'
+			,c_master,c_slave
+		]]>
+	</select>
+	
+	<select id="getTopGraph_year" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			select 'W' as gubun, c_yyyymm, i_use from tb_water
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'G' as gubun, c_yyyymm, i_use from tb_gas
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'E' as gubun, c_yyyymm, round(avg(i_kwh),2) as i_use
+			from tb_electric
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			group by c_yyyymm
+		]]>
+	</select>
+	
+	<select id="getMidGraph_year" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			select to_char(t_datetime,'yyyymm') as datetime , c_slave, round(avg(i_w_now) ,2) as val
+			from tb_history
+			where to_char(t_datetime,'yyyy') = to_char(sysdate,'yyyy')
+			group by to_char(t_datetime,'yyyymm'), c_slave
+			order by c_slave
+		]]>
+	</select>
+	
+ 	<select id="getMidGraph_year_temp" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			select c_yyyymm, c_slave, i_val
+			from temptable
+		]]>
+	</select> 
+	
+	<select id="getFirstMidGraph_year" parameterType="hashmap" resultType="hashmap">
+		SELECT z.t_datetime                   AS tim, 
+		       e.c_slave                      AS c_slave, 
+		       e.c_name                       AS cname, 
+		       SUM(Round(z.watt - y.watt, 2)) AS watt 
+		FROM   (SELECT To_char(t_datetime, 'yyyymm') AS t_datetime, 
+		               c_slave, 
+		               i_num, 
+		               Max(i_kwh_now)                AS watt 
+		        FROM   tb_rowdata 
+		        WHERE  To_char(t_datetime, 'yyyy') = To_char(SYSDATE, 'yyyy') 
+		        GROUP  BY To_char(t_datetime, 'yyyymm'), 
+		                  c_slave, 
+		                  i_num 
+		        ORDER  BY t_datetime, 
+		                  c_slave, 
+		                  i_num) Z 
+		       inner join (SELECT To_char(b.t_datetime, 'yyyymm') AS t_datetime 
+		                          --b.t_datetime 
+		                          , 
+		                          b.c_slave, 
+		                          b.i_num, 
+		                          b.i_kwh_now                     AS watt 
+		                   FROM   tb_rowdata b 
+		                          inner join (SELECT Max(To_char(t_datetime, 
+		                                                 'yyyymmddHH24mi')) 
+		                                             AS 
+		                                             t_datetime 
+		                                      FROM   tb_rowdata 
+		                                      WHERE  To_char(t_datetime, 'yyyymm') = 
+		                                             to_char(SYSDATE - (INTERVAL '1' YEAR),'yyyy') || '12') 
+		                                     a 
+		                                  ON To_char(b.t_datetime, 'yyyymmddHH24mi') = 
+		                                     a.t_datetime) y 
+		               ON z.c_slave = y.c_slave 
+		                  AND z.i_num = y.i_num 
+		       inner join (SELECT c_slave, 
+		                          c_slave1, 
+		                          i_num 
+		                   FROM   tb_datadesc) d 
+		               ON z.i_num = d.i_num 
+		                  AND z.c_slave = d.c_slave 
+		       inner join (SELECT c_master, 
+		                          c_slave, 
+		                          c_name 
+		                   FROM   tb_device) e 
+		               ON d.c_slave = e.c_master 
+		                  AND d.c_slave1 = e.c_slave 
+		GROUP  BY z.t_datetime, 
+		          e.c_slave, 
+		          e.c_name 
+		--d.c_slave1 
+		ORDER  BY e.c_slave, 
+		          z.t_datetime 
+<!-- 
+			select a.yyyymm as tim, c.c_slave as c_slave, c.c_name as name, round(sum(i_w_now) / 1000,2) as watt
+			from
+			(select to_char(t_datetime,'yyyymm') as yyyymm, c_slave, i_num, i_w_now 
+			from tb_rowdata
+			where to_char(t_datetime,'yyyy') = to_char(sysdate,'yyyy')
+			) a
+			inner join 
+			(
+			select c_slave, c_slave1, i_num 
+			from tb_datadesc 
+			) b
+			on a.c_slave = b.c_slave and a.i_num = b.i_num
+			inner join
+			(
+			select c_master, c_slave, c_name 
+			from tb_device
+			) c
+			on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+			group by a.yyyymm, c.c_slave, c.c_name 
+			order by a.yyyymm
+ -->
+	</select>
+	
+	<select id="getFirstMidGraph_week" parameterType="hashmap" resultType="hashmap">
+			SELECT z.t_datetime                   AS tim, 
+			       e.c_slave                      AS c_slave, 
+			       e.c_name                       AS cname, 
+			       SUM(Round(z.watt - y.watt, 2)) AS watt 
+			FROM   (SELECT To_char(t_datetime, 'yyyymmdd') AS t_datetime, 
+			               c_slave, 
+			               i_num, 
+			               Max(i_kwh_now)                  AS watt 
+			        FROM   tb_rowdata 
+			        WHERE  To_char(t_datetime, 'yyyymmdd') BETWEEN #{DAY1} and #{DAY2}
+			        GROUP  BY To_char(t_datetime, 'yyyymmdd'), 
+			                  c_slave, 
+			                  i_num 
+			        ORDER  BY t_datetime, 
+			                  c_slave, 
+			                  i_num) Z 
+			       inner join (SELECT To_char(b.t_datetime, 'yyyymmdd') AS t_datetime 
+			                          --b.t_datetime 
+			                          , 
+			                          b.c_slave, 
+			                          b.i_num, 
+			                          b.i_kwh_now                       AS watt 
+			                   FROM   tb_rowdata b 
+			                          inner join (SELECT Max(To_char(t_datetime, 
+			                                                 'yyyymmddHH24mi')) 
+			                                             AS 
+			                                             t_datetime 
+			                                      FROM   tb_rowdata 
+			                                      WHERE  To_char(t_datetime, 'yyyymmdd') = 
+			                                             #{BDAY}) a 
+			                                  ON To_char(b.t_datetime, 'yyyymmddHH24mi') = 
+			                                     a.t_datetime) y 
+			               ON z.c_slave = y.c_slave 
+			                  AND z.i_num = y.i_num 
+			       inner join (SELECT c_slave, 
+			                          c_slave1, 
+			                          i_num 
+			                   FROM   tb_datadesc) d 
+			               ON z.i_num = d.i_num 
+			                  AND z.c_slave = d.c_slave 
+			       inner join (SELECT c_master, 
+			                          c_slave, 
+			                          c_name 
+			                   FROM   tb_device) e 
+			               ON d.c_slave = e.c_master 
+			                  AND d.c_slave1 = e.c_slave 
+			GROUP  BY z.t_datetime, 
+			          e.c_slave, 
+			          e.c_name 
+			--d.c_slave1 
+			ORDER  BY e.c_slave, 
+			          z.t_datetime 
+<!-- 
+			select a.yyyymmdd as tim, c.c_slave as c_slave, c.c_name as name, round(sum(i_w_now) / 1000,2) as watt
+			from
+			(select to_char(t_datetime,'yyyymmdd') as yyyymmdd, c_slave, i_num, i_w_now 
+			from tb_rowdata
+			where to_char(t_datetime,'yyyymmdd') between #{DAY1} and #{DAY2}
+			) a
+			inner join 
+			(
+			select c_slave, c_slave1, i_num 
+			from tb_datadesc 
+			) b
+			on a.c_slave = b.c_slave and a.i_num = b.i_num
+			inner join
+			(
+			select c_master, c_slave, c_name 
+			from tb_device
+			) c
+			on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+			group by a.yyyymmdd, c.c_slave, c.c_name 
+			order by a.yyyymmdd
+-->
+	</select>
+	
+	<select id="getFirstMidGraph_day" parameterType="hashmap" resultType="hashmap">
+
+			SELECT Substr(z.t_datetime, 9, 2)     AS tim, 
+			       e.c_slave                      AS c_slave, 
+			       e.c_name                       AS cname, 
+			       SUM(Round(z.watt - y.watt, 2)) AS watt 
+			FROM   (SELECT Max(To_char(t_datetime, 'yyyymmddHH24')) 
+			                 over( 
+			                   PARTITION BY To_char(t_datetime, 'yyyymmddHH24')) AS 
+			               t_datetime, 
+			               c_slave, 
+			               i_num, 
+			               Max(i_kwh_now)                                        AS watt 
+			        FROM   tb_rowdata 
+			        WHERE  To_char(t_datetime, 'yyyymmdd') = #{DAY1}  
+			        GROUP  BY To_char(t_datetime, 'yyyymmddHH24'), 
+			                  c_slave, 
+			                  i_num 
+			        ORDER  BY t_datetime, 
+			                  c_slave, 
+			                  i_num) Z 
+			       inner join (SELECT b.t_datetime, 
+			                          b.c_slave, 
+			                          b.i_num, 
+			                          b.i_kwh_now AS watt 
+			                   FROM   tb_rowdata b 
+			                          inner join (SELECT Max(To_char(t_datetime, 
+			                                                 'yyyymmddHH24mi')) 
+			                                             AS 
+			                                             t_datetime 
+			                                      FROM   tb_rowdata 
+			                                      WHERE  To_char(t_datetime, 'yyyymmdd') =
+			                                            #{BDAY} ) a 
+			                                  ON To_char(b.t_datetime, 'yyyymmddHH24mi') = 
+			                                     a.t_datetime) y 
+			               ON z.c_slave = y.c_slave 
+			                  AND z.i_num = y.i_num 
+			       inner join (SELECT c_slave, 
+			                          c_slave1, 
+			                          i_num 
+			                   FROM   tb_datadesc) d 
+			               ON z.i_num = d.i_num 
+			                  AND z.c_slave = d.c_slave 
+			       inner join (SELECT c_master, 
+			                          c_slave, 
+			                          c_name 
+			                   FROM   tb_device) e 
+			               ON d.c_slave = e.c_master 
+			                  AND d.c_slave1 = e.c_slave 
+			GROUP  BY z.t_datetime, 
+			          e.c_slave, 
+			          e.c_name  
+			ORDER  BY z.t_datetime, e.c_slave 
+<!-- 
+//			select substr(a.yyyymmdd,9,2) as tim, c.c_slave as c_slave, c.c_name as name, round(sum(i_w_now) / 1000,2) as watt
+/			from
+			(select to_char(t_datetime,'yyyymmddHH24') as yyyymmdd, c_slave, i_num, i_w_now 
+			from tb_rowdata
+			where to_char(t_datetime,'yyyymmdd') = #{DAY1} 
+			) a
+			inner join 
+			(
+			select c_slave, c_slave1, i_num 
+			from tb_datadesc 
+			) b
+			on a.c_slave = b.c_slave and a.i_num = b.i_num
+			inner join
+			(
+			select c_master, c_slave, c_name 
+			from tb_device
+			) c
+			on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+			group by a.yyyymmdd, c.c_slave, c.c_name 
+			order by a.yyyymmdd
+ -->
+
+	</select>
+	
+	<insert id="insertTemp" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO TB_TEMPERATURE
+			(
+				T_DATETIME,
+				I_TEMP,
+				I_HUMI
+			)
+			VALUES
+			(
+				SYSTIMESTAMP,
+				#{I_TEMP},
+				#{I_HUMI}
+			)
+		]]>
+	</insert>
+	
+	<select id="getTotalEnergy" parameterType="hashmap" resultType="hashmap">
+		SELECT z.t_datetime                   AS tim, 
+		       e.c_slave                      AS c_slave, 
+		       e.c_name                       AS cname, 
+		       SUM(Round(z.watt - y.watt, 2)) AS watt 
+		FROM   (SELECT To_char(t_datetime, 'yyyy') AS t_datetime, 
+		               c_slave, 
+		               i_num, 
+		               Max(i_kwh_now)              AS watt 
+		        FROM   tb_rowdata 
+		        WHERE  To_char(t_datetime, 'yyyymmdd') = To_char(SYSDATE, 'yyyymmdd') 
+		        GROUP  BY To_char(t_datetime, 'yyyy'), 
+		                  c_slave, 
+		                  i_num 
+		        ORDER  BY t_datetime, 
+		                  c_slave, 
+		                  i_num) Z 
+		       inner join (SELECT To_char(b.t_datetime, 'yyyymm') AS t_datetime 
+		                          --b.t_datetime 
+		                          , 
+		                          b.c_slave, 
+		                          b.i_num, 
+		                          b.i_kwh_now                     AS watt 
+		                   FROM   tb_rowdata b 
+		                          inner join (SELECT Min(To_char(t_datetime, 
+		                                                 'yyyymmddHH24mi')) 
+		                                             AS 
+		                                             t_datetime 
+		                                      FROM   tb_rowdata 
+		                                      WHERE  To_char(t_datetime, 'yyyymmdd') >= 
+		                                             to_char(SYSDATE - (INTERVAL '1' YEAR),'yyyymmdd') )  a 
+		                                  ON To_char(b.t_datetime, 'yyyymmddHH24mi') = 
+		                                     a.t_datetime) y 
+		               ON z.c_slave = y.c_slave 
+		                  AND z.i_num = y.i_num 
+		       inner join (SELECT c_slave, 
+		                          c_slave1, 
+		                          i_num 
+		                   FROM   tb_datadesc) d 
+		               ON z.i_num = d.i_num 
+		                  AND z.c_slave = d.c_slave 
+		       inner join (SELECT c_master, 
+		                          c_slave, 
+		                          c_name 
+		                   FROM   tb_device) e 
+		               ON d.c_slave = e.c_master 
+		                  AND d.c_slave1 = e.c_slave 
+		GROUP  BY z.t_datetime, 
+		          e.c_slave, 
+		          e.c_name 
+		--d.c_slave1 
+		ORDER  BY e.c_slave, 
+		          z.t_datetime 
+	
+<!-- 
+
+			select c.c_name as name, round(sum(i_w_now) / 1000,2) as watt
+			from
+				(select c_slave, i_num, i_w_now 
+				from tb_rowdata
+				where to_char(t_datetime,'yyyy') = to_char(sysdate,'yyyy')
+				) a
+				inner join 
+				(
+				select c_slave, c_slave1, i_num 
+				from tb_datadesc 
+				) b
+				on a.c_slave = b.c_slave and a.i_num = b.i_num
+				inner join
+				(
+				select c_master, c_slave, c_name 
+				from tb_device
+				) c
+				on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+				group by c.c_name 
+			union
+			select 'A' , sum(watt) from
+			(
+				select c.c_name as name, round(sum(i_w_now) / 1000,2) as watt
+				from
+				(select c_slave, i_num, i_w_now 
+				from tb_rowdata
+				where to_char(t_datetime,'yyyy') = to_char(sysdate,'yyyy')
+				) a
+				inner join 
+				(
+				select c_slave, c_slave1, i_num 
+				from tb_datadesc 
+				) b
+				on a.c_slave = b.c_slave and a.i_num = b.i_num
+				inner join
+				(
+				select c_master, c_slave, c_name 
+				from tb_device
+				) c
+				on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+				group by c.c_name 
+			)
+
+		-->
+	</select>
+
+	<select id="getEnergyFirstGraph" parameterType="hashmap" resultType="hashmap">
+		<if test='GB != NULL and GB eq "1".toString() '> <!-- 월간 -->
+			SELECT a.dt, round(avg(a.temp),2) as temp, round(avg(a.humi),2) as humi , b.c_slave, round(avg(b.kwh),2) as kwh
+			FROM 
+			(SELECT to_char(t_datetime, 'yyyy-mm') as dt, round(avg(i_temp),2) as temp, round(avg(i_humi),2) as humi
+				FROM TB_TEMPERATURE
+				where to_char(t_datetime, 'yyyy') = to_char(sysdate,'yyyy')
+				group by to_char(t_datetime, 'yyyy-mm')
+			) a
+			inner join 
+			(
+				select a.dt, c.c_slave, round(sum(i_w_now) / 1000,2) as kwh
+				from
+				(select to_char(t_datetime, 'yyyy-mm') as dt, c_slave, i_num, i_w_now 
+				from tb_rowdata
+				where to_char(t_datetime,'yyyy') = to_char(sysdate,'yyyy')
+				) a
+				inner join 
+				(
+				select c_slave, c_slave1, i_num 
+				from tb_datadesc 
+				) b
+				on a.c_slave = b.c_slave and a.i_num = b.i_num
+				inner join
+				(
+				select c_master, c_slave, c_name 
+				from tb_device
+				) c
+				on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+				group by a.dt, c.c_slave
+			) b on a.dt = b.dt
+	        group by a.dt, b.c_slave
+	        order by a.dt, b.c_slave
+		</if>
+		<if test='GB != NULL and GB eq "2".toString() '>
+			SELECT a.dt, round(avg(a.temp),2) as temp, round(avg(a.humi),2) as humi , b.c_slave, round(avg(b.kwh),2) as kwh
+			FROM 
+			(SELECT to_char(t_datetime, 'yyyy-mm-dd') as dt, round(avg(i_temp),2) as temp, round(avg(i_humi),2) as humi
+				FROM TB_TEMPERATURE
+				where to_char(t_datetime, 'yyyymmdd') between #{SDATE} and #{EDATE}
+				group by to_char(t_datetime, 'yyyy-mm-dd')
+			) a
+			inner join 
+			(
+				select a.dt, c.c_slave, round(sum(i_w_now) / 1000,2) as kwh
+				from
+				(select to_char(t_datetime, 'yyyy-mm-dd') as dt, c_slave, i_num, i_w_now 
+				from tb_rowdata
+				where to_char(t_datetime, 'yyyymmdd') between #{SDATE} and #{EDATE}
+				) a
+				inner join 
+				(
+				select c_slave, c_slave1, i_num 
+				from tb_datadesc 
+				) b
+				on a.c_slave = b.c_slave and a.i_num = b.i_num
+				inner join
+				(
+				select c_master, c_slave, c_name 
+				from tb_device
+				) c
+				on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+				group by a.dt, c.c_slave
+			) b on a.dt = b.dt
+	        group by a.dt, b.c_slave
+	        order by a.dt, b.c_slave
+	        		
+		</if>
+		<if test='GB != NULL and GB eq "3".toString() '>
+			SELECT a.dt, round(avg(a.temp),2) as temp, round(avg(a.humi),2) as humi , b.c_slave, round(avg(b.kwh),2) as kwh
+			FROM 
+			(SELECT to_char(t_datetime, 'yyyy-mm-dd') as dt, round(avg(i_temp),2) as temp, round(avg(i_humi),2) as humi
+				FROM TB_TEMPERATURE
+				where to_char(t_datetime, 'yyyymmdd') = #{SDATE}
+				group by to_char(t_datetime, 'yyyy-mm-dd')
+			) a
+			inner join 
+			(
+				select a.dt, c.c_slave, round(sum(i_w_now) / 1000,2) as kwh
+				from
+				(select to_char(t_datetime, 'yyyy-mm-dd') as dt, c_slave, i_num, i_w_now 
+				from tb_rowdata
+				where to_char(t_datetime, 'yyyymmdd') = #{SDATE}
+				) a
+				inner join 
+				(
+				select c_slave, c_slave1, i_num 
+				from tb_datadesc 
+				) b
+				on a.c_slave = b.c_slave and a.i_num = b.i_num
+				inner join
+				(
+				select c_master, c_slave, c_name 
+				from tb_device
+				) c
+				on b.c_slave = c.c_master and b.c_slave1 = c.c_slave
+				group by a.dt, c.c_slave
+			) b on a.dt = b.dt
+	        group by a.dt, b.c_slave
+	        order by a.dt, b.c_slave
+	        
+		</if>
+
+	</select>
+	
+	<select id="getEnergyResourceGraph" parameterType="hashmap" resultType="hashmap">
+		<if test='GB != NULL and GB eq "1".toString() '>
+			select 'a' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_bulletin
+			where c_yyyymm = #{SDATE}
+			union
+			select 'b' as gubun, sum(i_use) as prod, sum(i_use_pay) as pay
+			from tb_gas
+			where c_yyyymm = #{SDATE}
+			union
+			select 'c' as gubun, sum(i_use) as prod, sum(i_use_pay) as pay
+			from tb_water
+			where c_yyyymm = #{SDATE}
+			union
+			select 'd' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_sunlight
+			where c_yyyymm = #{SDATE}
+			union
+			select 'e' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_sunheat
+			where c_yyyymm = #{SDATE}
+			union
+			select 'f' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_geotherm
+			where c_yyyymm = #{SDATE}
+
+		</if>
+		<if test='GB != NULL and GB eq "2".toString() '>
+			select 'a' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_bulletin
+			where substr(c_yyyymm,1,4) = #{SDATE}
+			union
+			select 'b' as gubun, sum(i_use) as prod, sum(i_use_pay) as pay
+			from tb_gas
+			where substr(c_yyyymm,1,4) = #{SDATE}
+			union
+			select 'c' as gubun, sum(i_use) as prod, sum(i_use_pay) as pay
+			from tb_water
+			where substr(c_yyyymm,1,4) = #{SDATE}
+			union
+			select 'd' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_sunlight
+			where substr(c_yyyymm,1,4) = #{SDATE}
+			union
+			select 'e' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_sunheat
+			where substr(c_yyyymm,1,4) = #{SDATE}
+			union
+			select 'f' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_geotherm
+			where substr(c_yyyymm,1,4) = #{SDATE}
+
+		</if>
+		
+		<if test='GB == NULL'>
+			select 'A' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_bulletin
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'B' as gubun, sum(i_use) as prod, sum(i_use_pay) as pay
+			from tb_gas
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'C' as gubun, sum(i_use) as prod, sum(i_use_pay) as pay
+			from tb_water
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'D' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_sunlight
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'E' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_sunheat
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+			union
+			select 'F' as gubun, sum(i_kwh) as prod, sum(i_pay) as pay
+			from tb_geotherm
+			where substr(c_yyyymm,1,4) = '2016' --to_char(sysdate,'yyyy')
+
+		</if>
+	</select>
+	
+	<select id="getEnergyResourceGraph1" parameterType="hashmap" resultType="hashmap">
+		select 'A' as gubun, i_kwh as kwh from tb_bulletin
+		where c_yyyymm = #{SDATE}
+		union
+		select 'B' as gubun, sum(i_kwh_now) as kwh from tb_history
+		where to_char(t_datetime, 'yyyymm') = #{EDATE}
+		union
+		select 'C' as gubun, i_use as kwh from tb_gas
+		where c_yyyymm = #{SDATE}
+		union
+		select 'D' as gubun, sum(i_use) as kwh from tb_gas
+		where c_yyyymm = #{EDATE}
+		union
+		select 'E' as gubun, i_use as kwh from tb_water
+		where c_yyyymm = #{SDATE}
+		union
+		select 'F' as gubun, sum(i_use) as kwh from tb_water
+		where c_yyyymm = #{EDATE}
+	</select>
+	
+	<select id="getEnergyResourceGraph2" parameterType="hashmap" resultType="hashmap">
+		select 'A' as gubun, to_char(t_datetime, 'yyyymmdd') as X, sum(i_w_now) / 1000 as watt from tb_history
+        where to_char(t_datetime, 'yyyymm') = #{SDATE}
+        group by to_char(t_datetime, 'yyyymmdd')
+		union
+		select 'B' as gubun, to_char(t_datetime, 'yyyymmdd'), sum(i_w_now) / 1000 as watt from tb_history
+		where to_char(t_datetime, 'yyyymm') = #{EDATE}
+        group by to_char(t_datetime, 'yyyymmdd')
+        union
+		select 'C' as gubun, c_yyyymmdd, i_data from tb_mgas
+		where substr(c_yyyymmdd,1,6) = #{SDATE}
+		union
+		select 'D' as gubun, c_yyyymmdd, i_data from tb_mgas
+		where substr(c_yyyymmdd,1,6) = #{EDATE}
+		union
+		select 'E' as gubun, c_yyyymmdd, i_data from tb_mwater
+		where substr(c_yyyymmdd,1,6) = #{SDATE}
+		union
+		select 'F' as gubun, c_yyyymmdd, i_data from tb_mwater
+		where substr(c_yyyymmdd,1,6) = #{EDATE}
+	</select>
+	
+	<select id="getEnergyResourceGraph3" parameterType="hashmap" resultType="hashmap">
+		select 'A' as gubun , nvl(sum(i_w_now) / 1205.9, 0) as WATT from tb_history
+		where to_char(t_datetime, 'yyyymm') = #{SDATE}
+		union
+		select 'B' as gubun, nvl(i_data / 1205.9, 0) from tb_targetelect
+		where c_yyyymm = #{SDATE}
+		union
+		select 'C' as gubun, nvl(sum(i_data) / 1205.9, 0) from tb_mgas
+		where substr(c_yyyymmdd,1,6) = #{SDATE}
+		union
+		select 'D' as gubun, nvl(sum(i_data) / 1205.9,0) from tb_targetgas
+		where c_yyyymm = #{SDATE}
+		union
+		select 'E' as gubun, nvl(sum(i_data) / 1205.9,0) from tb_mwater
+		where substr(c_yyyymmdd,1,6) = #{SDATE}
+		union
+		select 'F' as gubun, nvl(sum(i_data) / 1205.9,0) from tb_targetwater
+		where c_yyyymm = #{SDATE}
+	</select>
+	
+	<select id="getEnergyResourceGraph4" parameterType="hashmap" resultType="hashmap">
+
+		select 'A' as gubun, to_char(t_datetime, 'yyyymmdd') as X, nvl(sum(i_w_now),0) / 1000 as watt from tb_history
+		where to_char(t_datetime, 'yyyymm') = #{SDATE}
+		group by to_char(t_datetime, 'yyyymmdd')
+		union
+		select 'B' as gubun, c_yyyymmdd, nvl(i_data,0) watt from tb_targetelectdaily
+		where substr(c_yyyymmdd, 1,6) = #{SDATE}
+		union
+		select 'C' as gubun, c_yyyymmdd, i_data from tb_targetgasdaily
+		where substr(c_yyyymmdd, 1,6) = #{SDATE}
+		union
+		select 'D' as gubun, c_yyyymmdd, i_data from tb_mgas
+		where substr(c_yyyymmdd, 1,6) = #{SDATE}
+		union
+		select 'E' as gubun, c_yyyymmdd, i_data from tb_targetwaterdaily
+		where substr(c_yyyymmdd, 1,6) = #{SDATE}
+		union
+		select 'F' as gubun, c_yyyymmdd, i_data from tb_mwater
+		where substr(c_yyyymmdd, 1,6) = #{SDATE}
+
+	</select>
+	
+	<select id="getFacilitiesListData" parameterType="hashmap" resultType="hashmap">
+
+		select a.c_master, a.c_slave, a.c_name, b.c_desc, b.c_useyn, b.c_point, to_char(b.i_max) as i_max, to_char(b.i_min) as i_min
+		from
+		(select c_master, c_slave, c_name 
+		from tb_device
+		where c_master = '0' and c_slave in ('15','16','17','18')
+		) a
+		inner join tb_devicedesc b on a.c_master = b.c_master and a.c_slave = b.c_slave
+
+	</select>
+	
+	<select id="getFacilitiesSelectData" parameterType="hashmap" resultType="hashmap">
+
+		select a.c_master, a.c_slave, a.c_name, b.c_desc, b.c_useyn, b.c_point, b.i_max, b.i_min
+		from
+		(select c_master, c_slave, c_name 
+		from tb_device
+		where c_master = '0' and c_slave = #{C_SLAVE}
+		) a
+		inner join tb_devicedesc b on a.c_master = b.c_master and a.c_slave = b.c_slave
+
+	</select>
+	
+	<select id="getFloorTempHumi" parameterType="hashmap" resultType="hashmap">
+		select
+		I_CO2, I_TEMP, I_HUMI,eb, ep, gb, gp, wb, wp
+        ,p_maxtemp,p_maxhumi,p_mintemp,p_minhumi
+        ,b_maxtemp,b_maxhumi,b_mintemp,b_minhumi , NVL(i_data, 0) i_data, NVL(sum, 0) sum
+        , round( nvl( ((ep + wp + gp) - (eb + wb + gb)) / nullif((eb + wb + gb), 0) * 100, 0), 0) as per
+		, round( nvl( (nvl(I_DATA, 0) - nvl(SUM, 0)) / nullif(SUM, 0) * 100, 0), 2) as per1
+		 from
+		(SELECT A.I_CO2, A.I_TEMP, A.I_HUMI FROM  
+		 (SELECT I_CO2, I_TEMP, I_HUMI FROM tb_co2 WHERE c_master = '0' AND c_slave = #{C_FLOOR} ORDER BY t_datetime DESC) A 
+		WHERE ROWNUM = 1) aa,
+		(
+            select eb, ep, gb, gp, wb, wp
+            from
+            (select 'EB' as gubun, i_kwh from tb_bulletin
+            where c_yyyymm = #{YYYYMM1}
+            union
+            select 'EP' as gubun, i_kwh from tb_bulletin
+            where c_yyyymm = #{YYYYMM2}
+            union
+            select 'GB' as gubun, i_use from tb_gas
+            where c_yyyymm = #{YYYYMM1}
+            union
+            select 'GP' as gubun, i_use from tb_gas
+            where c_yyyymm = #{YYYYMM2}
+            union
+            select 'WB' as gubun, i_use from tb_water
+            where c_yyyymm = #{YYYYMM1}
+            union
+            select 'WP' as gubun, i_use from tb_water
+            where c_yyyymm = #{YYYYMM2}) 
+            pivot
+            (
+                max(i_kwh)
+                for gubun
+                in('EB' as "EB", 'EP' as "EP", 'GB' as "GB", 'GP' as "GP", 'WB' as "WB", 'WP' as "WP")
+            )
+		) bb
+		,
+		(
+		select nvl(max(i_temp),0) as p_maxtemp , nvl(max(i_humi),0) as p_maxhumi, nvl(min(i_temp),0) as p_mintemp, nvl(min(i_humi),0) as p_minhumi from tb_co2
+		where to_char(t_datetime, 'yyyymmdd') = #{DAY2}
+		and c_master = '0' and c_slave = #{C_FLOOR}
+		) c
+		,
+		(
+		select nvl(max(i_temp),0) as b_maxtemp , nvl(max(i_humi),0) as b_maxhumi, nvl(min(i_temp),0) as b_mintemp, nvl(min(i_humi),0) as b_minhumi from tb_co2
+		where to_char(t_datetime, 'yyyymmdd') = #{DAY1}
+		and c_master = '0' and c_slave = #{C_FLOOR}
+		) d
+        ,
+        (
+		select i_data from TB_TARGETELECT
+		where c_yyyymm = #{YYYYMM2}
+        ) e
+        ,
+        (
+		select sum(i_w_now) as sum from tb_history
+		where to_char(t_datetime,'yyyymm') = #{YYYYMM2}
+		and c_master = #{C_MASTER}
+        ) f
+	</select>
+	
+	<select id="getFloorgraphtemp" parameterType="hashmap" resultType="hashmap">
+		select 'O' as GUBUN, to_char(t_datetime, 'yyyymm') as month, round(avg(i_temp),2) as temp 
+		from tb_temperature
+		where to_char(t_datetime, 'yyyy') = #{YYYY}
+		group by to_char(t_datetime, 'yyyymm')
+		union
+		select 'I' as GUBUN, to_char(t_datetime, 'yyyymm') as month, round(avg(i_temp),2) from tb_co2
+		where to_char(t_datetime, 'yyyy') = #{YYYY}
+		and c_master = '0' and c_slave = '2'
+		group by to_char(t_datetime, 'yyyymm')
+
+	</select>
+	
+	<select id="getFloorgraphUse" parameterType="hashmap" resultType="hashmap">
+         select 'E' as gubun, c_yyyymm, i_kwh from tb_bulletin
+         where substr(c_yyyymm,1,4) = #{YYYY}
+         union
+         select 'G' as gubun, c_yyyymm, i_use from tb_gas
+         where substr(c_yyyymm,1,4) = #{YYYY}
+         union
+         select 'W' as gubun, c_yyyymm, i_use from tb_water
+         where substr(c_yyyymm,1,4) = #{YYYY}
+
+	</select>
+	
+	<select id="pop_trendLog" parameterType="hashmap" resultType="hashmap">
+	select
+		#{cFloor} C_FLOOR, to_char(to_date(kk.dt, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') dt, kk.c_desc, kk.watt, kk.co2, kk.temp, kk.humi
+	from
+		(
+			select c.dt, a.c_desc, c.watt, c.co2, c.temp, c.humi
+			from
+			(
+				select 'elect' as e, c_slave, to_char(t_datetime, 'YYYYMMDDHH') as dt1,
+					to_char(t_datetime, 'YYYYMMDDHH24MI') as dt, i_num, i_w_now / 1000 as watt , 0 as co2,0 as temp,0 as humi
+				from tb_rowdata
+				where c_slave = #{cElecValue}
+				And to_char(t_datetime, 'YYYYMMDD') between #{T_DATETIME1} and #{T_DATETIME2}
+			) c inner join 
+	(select c_slave, i_num, c_desc
+	From tb_datadesc
+	Where c_slave = #{cElecValue}) a
+	On c.c_slave = a.c_slave and c.i_num = a.i_num
+	Union 
+	Select 
+	To_char(t_datetime, 'YYYYMMDDHH24MI') as dt, 'co2' as desrc ,0,  i_co2, i_temp, i_humi 
+	From tb_co2
+	Where c_slave = #{cCo2Value}
+	and to_char(t_datetime, 'YYYYMMDD') between #{T_DATETIME1} and #{T_DATETIME2}
+	) kk
+	order by kk.dt
+	</select>
+	
+	
+	<select id="inputList" parameterType="hashmap" resultType="hashmap">
+		select
+			TO_CHAR(TO_DATE(C_YYYYMMDD, 'YYYYMMDD'), 'YYYY-MM-DD') C_YYYYMMDD
+			, C_FLOOR
+			, I_USE
+			, I_USE_PAY
+			<!-- 테이블 추가시 sTable 항목 추가 -->
+			<if test="sTable == 'TB_GAS2'">
+				, 'gas' C_GUBUN
+			</if>
+			<if test="sTable == 'TB_WATER2'">
+				, 'water' C_GUBUN
+			</if>
+			<if test="sTable == 'TB_ELECTRIC2'">
+				, 'electric' C_GUBUN
+			</if>
+		from ${sTable}
+		where 1 = 1
+		<if test='cFloor != NULL' >
+				AND C_FLOOR = #{cFloor}
+		</if>
+			AND C_YYYYMMDD LIKE '%' || #{cYYYYMM} || '%'
+		ORDER BY C_FLOOR, C_YYYYMMDD DESC
+	</select>
+	
+	<insert id="inputWriteProc" parameterType="hashmap">
+		MERGE INTO ${sTable}
+			USING DUAL
+			ON (C_YYYYMMDD = #{C_YYYYMMDD} and C_FLOOR = #{C_FLOOR})
+			WHEN MATCHED THEN
+				UPDATE SET
+					I_USE = #{I_USE}
+					, I_USE_PAY = #{I_USE_PAY}
+			WHEN NOT MATCHED THEN
+				INSERT (C_YYYYMMDD, C_FLOOR, I_USE, I_USE_PAY) 
+				VALUES (#{C_YYYYMMDD}, #{C_FLOOR}, #{I_USE}, #{I_USE_PAY})
+	</insert>
+	
+	<select id="inputUpdate" parameterType="hashmap" resultType="hashmap">
+		select
+			TO_CHAR(TO_DATE(C_YYYYMMDD, 'YYYYMMDD'), 'YYYY-MM-DD') C_YYYYMMDD
+			, C_FLOOR
+			, I_USE
+			, I_USE_PAY
+			<!-- 테이블 추가시 sTable 항목 추가 -->
+			<if test="sTable == 'TB_GAS2'">
+				, 'gas' C_GUBUN
+				, '가스' C_GUBUNNAME
+			</if>
+			<if test="sTable == 'TB_WATER2'">
+				, 'water' C_GUBUN
+				, '수도' C_GUBUNNAME
+			</if>
+			<if test="sTable == 'TB_ELECTRIC2'">
+				, 'electric' C_GUBUN
+				, '전기' C_GUBUNNAME
+			</if>
+		from ${sTable}
+		where 1 = 1
+			AND C_FLOOR = #{C_FLOOR}  
+			AND C_YYYYMMDD = #{C_YYYYMMDD}
+	</select>
+	
+	<select id="getWeather" parameterType="hashmap" resultType="hashmap">
+		select
+			I_TEMP, I_HUMI, C_CONDITION
+		from TB_TEMPERATURE
+			where rownum = 1
+			order by T_DATETIME desc 
+	</select>
+	
+	<select id="selectDataDescList" parameterType="hashmap" resultType="hashmap">
+		select
+			C_MASTER
+			, C_SLAVE
+			, C_SLAVE1
+			, I_NUM
+			, C_DESC
+			, C_ID
+		from TB_DATADESC
+		where 1 = 1
+			AND c_master = '0'
+			and c_slave = #{C_SLAVE}
+	</select>
+	
+	<select id="selectDataDescOne" parameterType="hashmap" resultType="hashmap">
+		select
+			C_MASTER
+			, C_SLAVE
+			, C_SLAVE1
+			, I_NUM
+			, C_DESC
+			, C_ID
+		from TB_DATADESC
+		where 1 = 1
+			AND C_MASTER = #{C_MASTER}
+			and C_SLAVE = #{C_SLAVE}
+			AND C_SLAVE1 = #{C_SLAVE1}
+			AND I_NUM = #{I_NUM}
+	</select>
+	
+	<insert id="updateDataDescOne" parameterType="hashmap">
+		update TB_DATADESC set
+			C_ID = #{cc_id}
+		where 1 = 1
+			AND C_MASTER = #{cc_master}
+			and C_SLAVE = #{cc_slave}
+			AND C_SLAVE1 = #{cc_slave1}
+			AND I_NUM = #{ii_num}
+	</insert>
+	
+	<select id="selectDataList" parameterType="hashmap" resultType="hashmap">
+		select b.dt, a.c_master, a.c_slave, a.c_slave1, a.i_num, a.c_desc, b.i_w_now, a.c_id
+		from
+			(select c_master, c_slave, c_slave1, i_num, c_desc, c_id
+			from tb_datadesc
+			where c_slave = #{C_SLAVE}) a
+			inner join
+			(select to_char(t_datetime, 'yyyy/mm/dd hh24:mi') as dt, c_master, c_slave, i_num, i_w_now 
+			from tb_rowdata
+			where c_master = '0' and c_slave = #{C_SLAVE}
+			and i_num in (select i_num from tb_datadesc
+			where c_slave = #{C_SLAVE})
+			and to_char(t_datetime, 'yyyymmddhh24mi') = #{DT}
+			) b
+		on a.c_master = b.c_master and a.c_slave = b.c_slave and a.i_num = b.i_num
+	</select>
+</mapper>

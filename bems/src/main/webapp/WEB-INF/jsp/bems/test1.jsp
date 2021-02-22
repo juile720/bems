@@ -233,7 +233,7 @@ plotOptions: {
 				y: 55,
 				floating: false,// true,
 				backgroundColor :'#323b44',
-				itemStyle:{color:'#0b4a45'}
+				itemStyle:{color:'#f0f0f0'}
 				//backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 			},
 			series: []

@@ -1,4 +1,4 @@
-/com
-/config
-/mapper
-/message
+/config/
+/mapper/
+/message/
+/com/
